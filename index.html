@@ -30,7 +30,7 @@
         .long-strip-container {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem; 
+            gap: 0.35rem; 
             width: 100%;
             max-width: 360px; 
         }
@@ -53,11 +53,11 @@
             transition: all 0.2s ease;
             background: white;
             border: 0.5px solid var(--border-fine);
-            font-size: 13.5px;
-            line-height: 1.5;
+            font-size: 13px;
+            line-height: 1.4;
             cursor: pointer;
-            padding: 1.1rem;
-            margin-bottom: 0.25rem;
+            padding: 1rem;
+            margin-bottom: 0.2rem;
             text-align: left;
         }
         .option-box:hover {
@@ -67,7 +67,7 @@
 
         .archive-entry {
             border-bottom: 0.5px solid rgba(48, 45, 45, 0.03);
-            padding: 0.65rem 0; 
+            padding: 0.5rem 0; 
             transition: all 0.2s ease;
         }
         .archive-entry:hover { opacity: 0.5; cursor: help; }
@@ -93,10 +93,14 @@
         }
 
         .qr-placeholder {
-            width: 65px; height: 65px;
-            background: transparent;
-            margin: 0 auto;
-            display: flex; align-items: center; justify-content: center;
+            width: 70px; 
+            height: 70px;
+            background: #fff;
+            border: 0.5px solid rgba(48,45,45,0.05);
+            margin: 0.5rem auto;
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
             overflow: hidden;
         }
 
@@ -115,23 +119,23 @@
     </div>
 
     <!-- 1. 验证页 -->
-    <section id="access-screen" class="min-h-screen w-full flex flex-col items-center justify-center space-y-20 fade-in theme-charcoal px-12 text-white">
-        <div class="text-center space-y-4">
+    <section id="access-screen" class="min-h-screen w-full flex flex-col items-center justify-center space-y-16 fade-in theme-charcoal px-12 text-white text-center">
+        <div class="space-y-4">
             <div class="metadata opacity-40">Entry Control</div>
             <h2 class="text-3xl serif font-light tracking-widest italic text-white text-nowrap">女哲学家 思想坐标</h2>
         </div>
-        <div class="space-y-10 w-full max-w-[180px] text-center">
-            <input type="password" id="access-code" class="w-full bg-transparent border-b border-[#4A4646] py-2 text-center text-xl focus:outline-none focus:border-white transition-all font-light tracking-[0.5em]" placeholder="••••">
+        <div class="space-y-8 w-full max-w-[180px]">
+            <input type="password" id="access-code" class="w-full bg-transparent border-b border-[#4A4646] py-2 text-center text-xl focus:outline-none focus:border-white transition-all font-light tracking-[0.4em]" placeholder="••••">
             <button onclick="verifyAccess()" class="w-full py-4 bg-white text-[#302D2D] text-[10px] tracking-widest uppercase font-bold active:scale-95">Unlock</button>
         </div>
         <p class="text-[9px] tracking-[0.4em] uppercase opacity-30 italic pt-20">© 云树cloudtree</p>
     </section>
 
     <!-- 2. 欢迎页 -->
-    <section id="welcome-screen" class="hidden min-h-screen w-full flex flex-col items-center justify-center text-center space-y-36 fade-in theme-charcoal px-10">
+    <section id="welcome-screen" class="hidden min-h-screen w-full flex flex-col items-center justify-center text-center space-y-32 fade-in theme-charcoal px-10">
         <header class="space-y-8 text-white">
-            <div class="metadata opacity-30">Conceptual Map 2026</div>
-            <h1 class="text-3xl md:text-4xl serif font-medium tracking-tight leading-tight italic">解锁女哲学家<br>精神坐标</h1>
+            <div class="metadata opacity-30">Archive 2026</div>
+            <h1 class="text-2xl md:text-3xl serif font-normal tracking-tight leading-tight italic">解锁女哲学家<br>精神坐标</h1>
         </header>
         <div class="space-y-16 flex flex-col items-center">
             <p class="text-[11px] leading-relaxed text-[#8C8888] font-light tracking-widest max-w-xs uppercase text-white/60">
@@ -144,7 +148,7 @@
     </section>
 
     <!-- 3. 测试页 -->
-    <section id="quiz-screen" class="hidden w-full max-w-xl px-12 py-20 flex flex-col min-h-screen fade-in bg-[#FBFCFA]">
+    <section id="quiz-screen" class="hidden w-full max-w-xl px-12 py-16 flex flex-col min-h-screen fade-in bg-[#FBFCFA]">
         <div class="space-y-12">
             <div class="space-y-6">
                 <div class="w-full h-[0.5px] bg-gray-100"><div id="progress" class="h-full bg-[#169cb2] w-0 transition-all duration-700"></div></div>
@@ -153,13 +157,13 @@
                     <button id="back-btn" onclick="prevQuestion()" class="hidden opacity-40 hover:opacity-100 uppercase tracking-widest text-[8px]">← Prev</button>
                 </div>
             </div>
-            <h2 id="question-text" class="text-xl serif leading-relaxed font-medium text-[#302D2D]"></h2>
-            <div id="options-container" class="space-y-0.5 pt-6"></div>
+            <h2 id="question-text" class="text-lg md:text-xl serif leading-relaxed font-medium text-[#302D2D]"></h2>
+            <div id="options-container" class="space-y-0.5 pt-4"></div>
         </div>
         <p class="text-[8px] text-center mt-auto pt-10 tracking-[0.4em] uppercase opacity-10 italic">Archive Study 云树cloudtree</p>
     </section>
 
-    <!-- 4. 结果页 -->
+    <!-- 4. 结果页 (脱脂排版：无空白) -->
     <section id="result-screen" class="hidden w-full flex flex-col items-center min-h-screen fade-in pb-40 relative">
         <div class="fixed inset-0 theme-charcoal -z-10"></div>
         
@@ -168,59 +172,63 @@
                 
                 <div class="long-strip-container">
                     
-                    <div class="bg-white p-8 border border-[rgba(48,45,45,0.03)] text-center space-y-2 shadow-sm">
-                        <div class="metadata" style="color:var(--teal)">Final Report</div>
-                        <!-- 标题颜色锁定为雅青色 -->
-                        <h2 class="text-2xl serif font-black italic tracking-tighter uppercase" style="color:var(--teal)">女哲学家探测报告</h2>
-                        <div class="w-8 h-[1px] bg-[#169cb2] mx-auto opacity-30 mt-1"></div>
+                    <!-- 报告页眉 -->
+                    <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] text-center space-y-1 shadow-sm">
+                        <div class="metadata" style="color:var(--teal)">Report</div>
+                        <h2 class="text-xl serif font-black italic tracking-tighter uppercase" style="color:var(--teal)">女哲学家探测报告</h2>
+                        <div class="w-6 h-[0.5px] bg-[#169cb2] mx-auto opacity-30 mt-1"></div>
                     </div>
 
+                    <!-- 精神原型 -->
                     <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] relative shadow-sm text-left">
                         <div class="metadata mb-4 text-[#A39F9F] font-bold">Primary Archetype</div>
                         <div class="space-y-4">
-                            <!-- 名字调小，颜色锁定为雅青色 -->
-                            <h3 id="mentor-name" class="text-xl serif font-bold tracking-widest uppercase" style="color:var(--teal)"></h3>
-                            <p id="mentor-quote" class="text-[13.5px] italic text-gray-500 font-light leading-relaxed"></p>
-                            <div class="pt-4 border-t border-gray-50">
-                                <span class="metadata text-[8px]">Main Work / 代表作:</span>
+                            <!-- 导师名进一步调小 -->
+                            <h3 id="mentor-name" class="text-lg serif font-bold tracking-widest uppercase" style="color:var(--teal)"></h3>
+                            <p id="mentor-quote" class="text-[13px] italic text-gray-500 font-light leading-relaxed"></p>
+                            <div class="pt-3 border-t border-gray-50">
+                                <span class="metadata text-[8px]">Major Work / 代表作:</span>
                                 <p id="mentor-work" class="text-[11px] font-bold mt-1 text-[#302D2D] uppercase tracking-widest"></p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white p-8 border border-[rgba(48,45,45,0.03)] flex flex-col items-center shadow-sm">
-                        <div class="metadata mb-8 self-start">Soul Sigil / 思想符文</div>
+                    <!-- 思想符文 -->
+                    <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] flex flex-col items-center shadow-sm">
+                        <div class="metadata mb-6 self-start">Soul Sigil / 思想符文</div>
                         <div class="w-full aspect-square px-2">
                             <canvas id="radarChart"></canvas>
                         </div>
                     </div>
 
+                    <!-- 深度解读 -->
                     <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] text-left shadow-sm">
                         <div class="metadata mb-4 text-[#A39F9F]">Interpretation / 深度分析</div>
-                        <p id="result-desc" class="text-[12.5px] leading-relaxed text-gray-600 font-light text-justify"></p>
+                        <p id="result-desc" class="text-[12px] leading-relaxed text-gray-600 font-light text-justify"></p>
                     </div>
 
+                    <!-- 档案馆 -->
                     <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] shadow-sm">
-                        <div class="flex justify-between items-center mb-6">
-                            <div class="metadata">解锁更多女哲学家</div>
+                        <div class="flex justify-between items-center mb-4">
+                            <div class="metadata">更多女哲学家</div>
                             <button onclick="changeMapPage(1)" class="text-[8px] border border-[#169cb2] text-[#169cb2] px-2 py-0.5 font-bold">REFRESH</button>
                         </div>
-                        <div id="full-map-archive" class="space-y-0.5 text-left"></div>
+                        <div id="full-map-archive" class="space-y-0 text-left"></div>
                         <div class="flex justify-center gap-1.5 mt-4" id="pagination-dots"></div>
                     </div>
 
-                    <div class="p-8 bg-[#F7F7F5] border border-[rgba(48,45,45,0.03)] shadow-inner">
-                        <div class="metadata mb-6">Bibliography / 书单</div>
-                        <div id="book-list" class="space-y-3 text-gray-500 font-light text-[11px] text-left"></div>
+                    <!-- 书单 -->
+                    <div class="p-6 bg-[#F7F7F5] border border-[rgba(48,45,45,0.03)] shadow-inner">
+                        <div class="metadata mb-4">Bibliography / 书单</div>
+                        <div id="book-list" class="space-y-1 text-gray-500 font-light text-[11px] text-left"></div>
                     </div>
 
-                    <!-- 二维码结合模块：预留 xhs-qr.png 位置，且下载时自动隐藏 -->
-                    <div class="p-8 bg-white border border-[rgba(48,45,45,0.03)] text-center space-y-4 shadow-sm">
+                    <!-- 二维码显示区：网页版出现，下载图片忽略 -->
+                    <div class="p-6 bg-white border border-[rgba(48,45,45,0.03)] text-center space-y-4 shadow-sm">
                         <div class="metadata" style="color:var(--teal)">Connect</div>
-                        <!-- data-html2canvas-ignore 确保下载图片中不出现此区域 -->
-                        <!-- style="display:none;" 确保网页版也不出现二维码展示 -->
-                        <div class="qr-placeholder" data-html2canvas-ignore style="display:none;">
-                             <img src="xhs-qr.png" alt="QR Code" class="w-12 h-12 grayscale opacity-30">
+                        <!-- 二维码在浏览器里正常显示，但下载时通过 data-html2canvas-ignore 被移除 -->
+                        <div class="qr-placeholder" data-html2canvas-ignore>
+                             <img src="xhs-qr.png" alt="QR Code" class="w-14 h-14 grayscale opacity-40" onerror="this.parentElement.style.display='none'">
                         </div>
                         <p class="text-[8px] text-gray-400 tracking-widest uppercase italic">© 云树cloudtree</p>
                     </div>
@@ -242,25 +250,25 @@
             "表演性": "性别通过反复言行表演构建出的效应。",
             "赛博格": "打破自然/文化边界的混杂身份。",
             "交织性": "压迫并非孤立，而是多种维度叠加。",
-            "注视": "对自己与他者苦难的一种深度关注。"
+            "注视": "对自己与他者苦难的一种深邃关注。"
         };
 
         const philoData = {
-            hypatia: { name: "海帕提娅", quote: "保留你思考的权利。因为即使是错误的思考，也比不思考要好。", work: "《天文学评注》", desc: "你是理性的坚实拥簇。在混乱中仰望永恒的逻辑与秩序。", tags: ["理智", "秩序"], books: ["《海帕提娅传》"], dims: [95, 20, 30, 10, 80, 70], map: "数学、天文学" },
-            wollstonecraft: { name: "玛丽·沃斯通克拉夫特", quote: "我不希望女性拥有支配男性的权力，而是拥有支配她们自身权力的权利。", work: "《为女权辩护》", desc: "启蒙之光。坚信理性没有性别，尊严源于独立。", tags: ["独立", "契约"], books: ["《为女权辩护》"], dims: [70, 80, 50, 60, 80, 95], map: "公民权利" },
-            arendt: { name: "汉娜·阿伦特", quote: "平庸之恶源于拒绝思考，拒绝站在他人的立场去感知世界。", work: "《人的境况》", desc: "公共领域守护者。认为自由在共同担当中显现。", tags: ["行动", "对话"], books: ["《人的境况》", "《平庸之恶》"], dims: [80, 95, 60, 70, 40, 90], map: "政治哲学" },
-            beauvoir: { name: "西蒙娜·德·波伏娃", quote: "女人不是生来就是女人的，而是变成女人的。", work: "《第二性》", desc: "存在主义灵魂。生命是一场永恒的“自我生成”。", tags: ["生成", "主体性"], books: ["《第二性》"], dims: [75, 75, 40, 90, 95, 75], map: "存在主义" },
-            weil: { name: "西蒙娜·薇依", quote: "关注是灵魂中最稀有、最纯粹的慷慨形式。", work: "《扎根》", desc: "近乎神圣的共情力。认为思想植根于对劳动的尊重。", tags: ["注视", "共情"], books: ["《扎根》"], dims: [60, 60, 95, 40, 50, 80], map: "神秘主义" },
-            butler: { name: "朱迪斯·巴特勒", quote: "身份不是固定的事实，而是一种被迫的重复表演。", work: "《性别麻烦》", desc: "规则解构者。在权力的缝隙中寻找反抗的可能。", tags: ["表演", "解构"], books: ["《性别麻烦》"], dims: [70, 60, 50, 95, 85, 60], map: "酷儿理论" },
-            haraway: { name: "唐娜·哈拉维", quote: "我宁愿做一个赛博格，也不愿做一个女神。", work: "《赛博格宣言》", desc: "未来叙事者。打破自然与文化的边界，拥抱技术混杂。", tags: ["赛博格", "后人类"], books: ["《赛博格宣言》"], dims: [70, 65, 40, 95, 70, 60], map: "科学论" },
-            hooks: { name: "贝尔·胡克斯", quote: "爱是走向自由的一种行动。", work: "《关于爱的一切》", desc: "交织性先锋。正义必须包含爱，解放需打破枷锁。", tags: ["交叉性", "爱"], books: ["《关于爱的一切》"], dims: [60, 80, 90, 85, 60, 90], map: "黑人女性主义" },
-            davis: { name: "安吉拉·戴维斯", quote: "自由是一场无止境的奋斗。", work: "《女性，种族与阶级》", desc: "革命者。致力于废除压迫结构。认为解放不可脱离阶级分析。", tags: ["革命", "斗争"], books: ["《女性，种族与阶级》"], dims: [50, 98, 60, 85, 50, 95], map: "马女性主义" },
-            nussbaum: { name: "玛莎·努斯鲍姆", quote: "正义需要一种富有成效的情感。", work: "《能力的创造》", desc: "理智情感主义者。认为情感即认知，衡量福祉。", tags: ["能力", "脆弱"], books: ["《能力的创造》"], dims: [85, 75, 85, 40, 60, 90], map: "能力进路" },
-            stein: { name: "艾德丝·施泰因", quote: "每一个进入灵魂的词，都是一种命运。", work: "《对共情的本质研究》", desc: "现象学朝圣者。在共情深处探寻本质，寻找理性和神性的融合。", tags: ["现象学", "共情"], books: ["《对共情的本质研究》"], dims: [90, 30, 90, 20, 70, 60], map: "现象学" },
-            luxemburg: { name: "罗莎·卢森堡", quote: "自由永远是那些思考方式不同的人的自由。", work: "《社会改良还是革命》", desc: "思想闪电。主张彻底的民主与自发的政治行动。", tags: ["民主", "自发"], books: ["《社会改良还是革命》"], dims: [80, 98, 50, 90, 40, 95], map: "马克思主义" },
+            hypatia: { name: "海帕提娅", quote: "保留你思考的权利。因为即使是错误的思考，也比不思考要好。", work: "《天文学评注》", desc: "你是理性的坚实拥簇。在混乱中仰望永恒的逻辑与秩序。", tags: ["理智", "秩序"], books: ["《海帕提娅传》"], dims: [95, 20, 30, 10, 80, 70], map: "数学、天文学、新柏拉图主义" },
+            wollstonecraft: { name: "玛丽·沃斯通克拉夫特", quote: "我不希望女性拥有支配男性的权力，而是拥有支配她们自身权力的权利。", work: "《为女权辩护》", desc: "启蒙之光。坚信理性没有性别，尊严源于独立。", tags: ["独立", "契约"], books: ["《为女权辩护》"], dims: [70, 80, 50, 60, 80, 95], map: "启蒙主义、公民权利" },
+            arendt: { name: "汉娜·阿伦特", quote: "平庸之恶源于拒绝思考，拒绝站在他人的立场去感知世界。", work: "《人的境况》", desc: "公共领域守护者。认为自由在共同担当中显现。", tags: ["行动", "反平庸"], books: ["《人的境况》", "《平庸之恶》"], dims: [80, 95, 60, 70, 40, 90], map: "政治哲学、积极行动" },
+            beauvoir: { name: "西蒙娜·德·波伏娃", quote: "女人不是生来就是女人的，而是变成女人的。", work: "《第二性》", desc: "存在主义灵魂。生命是一场永恒的“自我生成”。", tags: ["生成", "主体性"], books: ["《第二性》"], dims: [75, 75, 40, 90, 95, 75], map: "存在主义、生成论" },
+            weil: { name: "西蒙娜·薇依", quote: "关注是灵魂中最稀有、最纯粹的慷慨形式。", work: "《扎根》", desc: "近乎神圣的共情力。认为思想植根于对他人的注视。", tags: ["注视", "共情"], books: ["《扎根》"], dims: [60, 60, 95, 40, 50, 80], map: "神秘主义" },
+            butler: { name: "朱迪斯·巴特勒", quote: "身份不是固定的事实，而是一种被迫的重复表演。", work: "《性别麻烦》", desc: "规则解构者。在权力的缝隙中寻找反抗的可能。", tags: ["表演", "解构"], books: ["《性别麻烦》"], dims: [70, 60, 50, 95, 85, 60], map: "酷儿理论、解构主义" },
+            haraway: { name: "唐娜·哈拉维", quote: "我宁愿做一个赛博格，也不愿做一个女神。", work: "《赛博格宣言》", desc: "未来叙事者。打破自然与文化的边界，拥抱技术混杂。", tags: ["赛博格", "后人类"], books: ["《赛博格宣言》"], dims: [70, 65, 40, 95, 70, 60], map: "科学论、后人类主义" },
+            hooks: { name: "贝尔·胡克斯", quote: "爱是走向自由的一种行动。", work: "《关于爱的一切》", desc: "交织性先锋。正义包含爱，解放需打破枷锁。", tags: ["交叉性", "爱"], books: ["《关于爱的一切》"], dims: [60, 80, 90, 85, 60, 90], map: "黑人女性主义、关怀政治" },
+            davis: { name: "安吉拉·戴维斯", quote: "自由是一场无止境的奋斗。", work: "《女性，种族与阶级》", desc: "革命者。认为女性解放不能脱离阶级分析。", tags: ["革命", "斗争"], books: ["《女性，种族与阶级》"], dims: [50, 98, 60, 85, 50, 95], map: "马克思主义女性主义" },
+            nussbaum: { name: "玛莎·努斯鲍姆", quote: "正义需要一种富有成效的情感。", work: "《能力的创造》", desc: "理智情感主义者。认为情感即认知，衡量福祉。", tags: ["能力", "脆弱"], books: ["《能力的创造》"], dims: [85, 75, 85, 40, 60, 90], map: "政治哲学、能力进路" },
+            stein: { name: "艾德丝·施泰因", quote: "每一个进入灵魂的词，都是一种命运。", work: "《对共情的本质研究》", desc: "现象学朝圣者。在共情深处探寻本质，寻找融合。", tags: ["现象学", "共情"], books: ["《对共情的本质研究》"], dims: [90, 30, 90, 20, 70, 60], map: "现象学、共情研究" },
+            luxemburg: { name: "罗莎·卢森堡", quote: "自由永远是那些思考方式不同的人的自由。", work: "《社会改良还是革命》", desc: "思想闪电。主张彻底的民主与自发的行动。", tags: ["民主", "自发"], books: ["《社会改良还是革命》"], dims: [80, 98, 50, 90, 40, 95], map: "马克思主义" },
             mernissi: { name: "法蒂玛·梅尔尼西", quote: "如果我们不书写历史，别人就会替我们书写。", work: "《后宫背后的面纱》", desc: "跨文化破墙者。通过重读经典挑战父权与偏见。", tags: ["跨文化", "重写"], books: ["《后宫背后的面纱》"], dims: [80, 70, 60, 85, 75, 85], map: "伊斯兰女性主义" },
-            foot: { name: "菲利帕·福特", quote: "美德是人类繁荣的一种卓越表现。", work: "《美德与罪过》", desc: "美德伦理复兴者。回归人的性格与卓越中。", tags: ["美德", "逻辑"], books: ["《美德与罪过》"], dims: [90, 40, 70, 30, 80, 80], map: "美德伦理" },
-            anscombe: { name: "伊丽莎白·安斯康姆", quote: "意图是通向行动本质的钥匙。", work: "《意图》", desc: "逻辑剖析者。挑战伦理学框架，智性的极致。", tags: ["解析", "意图"], books: ["《意图》"], dims: [98, 30, 40, 50, 85, 70], map: "行动论" }
+            foot: { name: "菲利帕·福特", quote: "美德是人类繁荣的一种卓越表现。", work: "《美德与罪过》", desc: "美德伦理复兴者。回归人的性格与卓越中。", tags: ["美德", "逻辑"], books: ["《美德与罪过》"], dims: [90, 40, 70, 30, 80, 80], map: "美德伦理、分析哲学" },
+            anscombe: { name: "伊丽莎白·安斯康姆", quote: "意图是通向行动本质的钥匙。", work: "《意图》", desc: "逻辑剖析者。挑战伦理学框架，智性的极致。", tags: ["解析", "意图"], books: ["《意图》"], dims: [98, 30, 40, 50, 85, 70], map: "分析伦理学、行动论" }
         };
 
         const questions = [
@@ -406,7 +414,7 @@
         function showDefinition(word) {
             document.getElementById('modal-title').innerText = word;
             const data = Object.values(philoData).find(p => p.name === word);
-            document.getElementById('modal-content').innerText = dictionary[word] || data?.desc || "正在检索数据...";
+            document.getElementById('modal-content').innerText = dictionary[word] || data?.desc || "检索中...";
             document.getElementById('modal-overlay').style.display = 'flex';
         }
         function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
@@ -488,7 +496,7 @@
             document.getElementById('mentor-quote').innerText = `“${data.quote}”`;
             document.getElementById('mentor-work').innerText = data.work;
             document.getElementById('result-desc').innerText = data.desc;
-            document.getElementById('book-list').innerHTML = data.books.map(b => `<div class="py-1.5 italic text-[11px] text-gray-500">· ${b}</div>`).join('');
+            document.getElementById('book-list').innerHTML = data.books.map(b => `<div class="py-1 italic text-[11px] text-gray-500">· ${b}</div>`).join('');
             
             renderMapPage(0);
 
