@@ -92,16 +92,12 @@
             padding: 40px;
         }
 
-        .qr-container {
-            width: 70px; 
-            height: 70px;
+        .qr-placeholder {
+            width: 65px; height: 65px;
+            background: transparent;
             margin: 0 auto;
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            background: #fff;
-            padding: 4px;
-            border: 0.5px solid rgba(0,0,0,0.03);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
         }
 
         ::-webkit-scrollbar { width: 0; }
@@ -122,7 +118,7 @@
     <section id="access-screen" class="min-h-screen w-full flex flex-col items-center justify-center space-y-20 fade-in theme-charcoal px-12 text-white">
         <div class="text-center space-y-4">
             <div class="metadata opacity-40">Entry Control</div>
-            <h2 class="text-3xl serif font-light tracking-widest italic">女哲学家 思想坐标</h2>
+            <h2 class="text-3xl serif font-light tracking-widest italic text-white text-nowrap">女哲学家 思想坐标</h2>
         </div>
         <div class="space-y-10 w-full max-w-[180px] text-center">
             <input type="password" id="access-code" class="w-full bg-transparent border-b border-[#4A4646] py-2 text-center text-xl focus:outline-none focus:border-white transition-all font-light tracking-[0.5em]" placeholder="••••">
@@ -172,18 +168,20 @@
                 
                 <div class="long-strip-container">
                     
-                    <div class="bg-white p-8 border border-[rgba(48,45,45,0.03)] text-center space-y-2">
+                    <div class="bg-white p-8 border border-[rgba(48,45,45,0.03)] text-center space-y-2 shadow-sm">
                         <div class="metadata" style="color:var(--teal)">Final Report</div>
+                        <!-- 标题颜色锁定为雅青色 -->
                         <h2 class="text-2xl serif font-black italic tracking-tighter uppercase" style="color:var(--teal)">女哲学家探测报告</h2>
                         <div class="w-8 h-[1px] bg-[#169cb2] mx-auto opacity-30 mt-1"></div>
                     </div>
 
                     <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] relative shadow-sm text-left">
                         <div class="metadata mb-4 text-[#A39F9F] font-bold">Primary Archetype</div>
-                        <div class="space-y-3">
+                        <div class="space-y-4">
+                            <!-- 名字调小，颜色锁定为雅青色 -->
                             <h3 id="mentor-name" class="text-xl serif font-bold tracking-widest uppercase" style="color:var(--teal)"></h3>
                             <p id="mentor-quote" class="text-[13.5px] italic text-gray-500 font-light leading-relaxed"></p>
-                            <div class="pt-3 border-t border-gray-50">
+                            <div class="pt-4 border-t border-gray-50">
                                 <span class="metadata text-[8px]">Main Work / 代表作:</span>
                                 <p id="mentor-work" class="text-[11px] font-bold mt-1 text-[#302D2D] uppercase tracking-widest"></p>
                             </div>
@@ -191,7 +189,7 @@
                     </div>
 
                     <div class="bg-white p-8 border border-[rgba(48,45,45,0.03)] flex flex-col items-center shadow-sm">
-                        <div class="metadata mb-6 self-start">Soul Sigil / 思想符文</div>
+                        <div class="metadata mb-8 self-start">Soul Sigil / 思想符文</div>
                         <div class="w-full aspect-square px-2">
                             <canvas id="radarChart"></canvas>
                         </div>
@@ -213,22 +211,23 @@
 
                     <div class="p-8 bg-[#F7F7F5] border border-[rgba(48,45,45,0.03)] shadow-inner">
                         <div class="metadata mb-6">Bibliography / 书单</div>
-                        <div id="book-list" class="space-y-2 text-gray-500 font-light text-[11px] text-left"></div>
+                        <div id="book-list" class="space-y-3 text-gray-500 font-light text-[11px] text-left"></div>
                     </div>
 
-                    <!-- 二维码结合模块 -->
+                    <!-- 二维码结合模块：预留 xhs-qr.png 位置，且下载时自动隐藏 -->
                     <div class="p-8 bg-white border border-[rgba(48,45,45,0.03)] text-center space-y-4 shadow-sm">
                         <div class="metadata" style="color:var(--teal)">Connect</div>
-                        <div class="qr-container">
-                             <!-- 二维码图片 xhs-qr.png 放在 index.html 同级目录下 -->
-                             <img src="xhs-qr.png" alt="QR Code" class="w-14 h-14 grayscale opacity-40">
+                        <!-- data-html2canvas-ignore 确保下载图片中不出现此区域 -->
+                        <!-- style="display:none;" 确保网页版也不出现二维码展示 -->
+                        <div class="qr-placeholder" data-html2canvas-ignore style="display:none;">
+                             <img src="xhs-qr.png" alt="QR Code" class="w-12 h-12 grayscale opacity-30">
                         </div>
                         <p class="text-[8px] text-gray-400 tracking-widest uppercase italic">© 云树cloudtree</p>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mt-8 px-2">
+            <div class="grid grid-cols-2 gap-4 mt-12 px-2">
                 <button onclick="location.reload()" class="py-5 bg-white/5 border border-white/20 text-white text-[10px] tracking-widest uppercase rounded-sm">Retry</button>
                 <button id="save-btn" onclick="saveAsImage()" class="py-5 bg-white text-[#302D2D] text-[10px] tracking-widest uppercase rounded-sm font-black shadow-2xl active:scale-95 transition-all">Save Image</button>
             </div>
@@ -243,7 +242,7 @@
             "表演性": "性别通过反复言行表演构建出的效应。",
             "赛博格": "打破自然/文化边界的混杂身份。",
             "交织性": "压迫并非孤立，而是多种维度叠加。",
-            "注视": "对自己与他者苦难的一种深邃关注。"
+            "注视": "对自己与他者苦难的一种深度关注。"
         };
 
         const philoData = {
