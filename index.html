@@ -13,7 +13,7 @@
             --bg-paper: #FBFCFA;
             --charcoal: #302D2D;
             --teal: #169cb2;
-            --border-fine: rgba(48, 45, 45, 0.04);
+            --border-fine: rgba(48, 45, 45, 0.05);
         }
 
         body {
@@ -26,13 +26,13 @@
         .serif { font-family: 'Noto Serif SC', serif; }
         .theme-charcoal { background-color: var(--charcoal); color: var(--bg-paper); }
 
-        /* 极致紧凑长条 */
+        /* 极致紧凑长条排版 */
         .long-strip-container {
             display: flex;
             flex-direction: column;
             gap: 0.5rem; 
             width: 100%;
-            max-width: 365px; 
+            max-width: 360px; 
         }
 
         .fade-in { animation: fadeIn 0.4s ease-out forwards; }
@@ -43,7 +43,7 @@
 
         .metadata {
             font-size: 8px;
-            letter-spacing: 0.25em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             color: #A39F9F;
             font-weight: 600;
@@ -56,8 +56,8 @@
             font-size: 13.5px;
             line-height: 1.5;
             cursor: pointer;
-            padding: 1.15rem;
-            margin-bottom: 0.3rem;
+            padding: 1.1rem;
+            margin-bottom: 0.25rem;
             text-align: left;
         }
         .option-box:hover {
@@ -66,7 +66,7 @@
         }
 
         .archive-entry {
-            border-bottom: 0.5px solid rgba(48, 45, 45, 0.02);
+            border-bottom: 0.5px solid rgba(48, 45, 45, 0.03);
             padding: 0.65rem 0; 
             transition: all 0.2s ease;
         }
@@ -78,7 +78,7 @@
             border-radius: 50%;
             transition: all 0.3s;
         }
-        .pagination-dot.active { background: var(--teal); transform: scale(1.2); }
+        .pagination-dot.active { background: var(--teal); transform: scale(1.3); }
 
         #modal-overlay {
             display: none;
@@ -94,10 +94,10 @@
 
         .qr-placeholder {
             width: 65px; height: 65px;
-            background: #FFF;
-            border: 0.5px solid rgba(0,0,0,0.03);
+            background: transparent;
             margin: 0 auto;
             display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
         }
 
         ::-webkit-scrollbar { width: 0; }
@@ -105,12 +105,11 @@
 </head>
 <body class="min-h-screen flex flex-col items-center">
 
-    <!-- 弹窗 -->
     <div id="modal-overlay" onclick="closeModal()">
         <div class="bg-white p-10 max-w-xs w-full text-center fade-in shadow-2xl" onclick="event.stopPropagation()">
             <div class="metadata mb-6" style="color:var(--teal)">Archive Detail</div>
             <h4 id="modal-title" class="text-xl serif font-black mb-6 text-[#302D2D]"></h4>
-            <p id="modal-content" class="text-[12px] leading-relaxed text-gray-400 font-light text-justify"></p>
+            <p id="modal-content" class="text-[12px] leading-relaxed text-gray-500 font-light text-justify"></p>
             <button onclick="closeModal()" class="mt-12 text-[9px] tracking-widest uppercase border-b border-gray-200 pb-1 text-[#302D2D]">Close / 关闭</button>
         </div>
     </div>
@@ -118,8 +117,8 @@
     <!-- 1. 验证页 -->
     <section id="access-screen" class="min-h-screen w-full flex flex-col items-center justify-center space-y-20 fade-in theme-charcoal px-12">
         <div class="text-center space-y-4">
-            <div class="metadata opacity-40">Archive Control</div>
-            <h2 class="text-3xl serif font-light tracking-widest italic">女哲学家 ・ 思想坐标</h2>
+            <div class="metadata opacity-40">Entry Control</div>
+            <h2 class="text-3xl serif font-light tracking-widest italic text-white text-nowrap">女哲学家 思想坐标</h2>
         </div>
         <div class="space-y-10 w-full max-w-[180px] text-center">
             <input type="password" id="access-code" class="w-full bg-transparent border-b border-[#4A4646] py-2 text-center text-xl focus:outline-none focus:border-white transition-all font-light tracking-[0.5em]" placeholder="••••">
@@ -130,9 +129,9 @@
 
     <!-- 2. 欢迎页 -->
     <section id="welcome-screen" class="hidden min-h-screen w-full flex flex-col items-center justify-center text-center space-y-36 fade-in theme-charcoal px-10">
-        <header class="space-y-8">
+        <header class="space-y-8 text-white">
             <div class="metadata opacity-30">Conceptual Map 2026</div>
-            <h1 class="text-5xl md:text-6xl serif font-black tracking-tighter leading-tight italic text-white">解锁女哲学家<br>精神坐标</h1>
+            <h1 class="text-3xl md:text-4xl serif font-medium tracking-tight leading-tight italic">解锁女哲学家<br>精神坐标</h1>
         </header>
         <div class="space-y-16 flex flex-col items-center">
             <p class="text-[11px] leading-relaxed text-[#8C8888] font-light tracking-widest max-w-xs uppercase">
@@ -148,19 +147,19 @@
     <section id="quiz-screen" class="hidden w-full max-w-xl px-12 py-20 flex flex-col min-h-screen fade-in bg-[#FBFCFA]">
         <div class="space-y-12">
             <div class="space-y-6">
-                <div class="w-full h-[1px] bg-gray-100"><div id="progress" class="h-full bg-[#169cb2] w-0 transition-all duration-700"></div></div>
+                <div class="w-full h-[0.5px] bg-gray-100"><div id="progress" class="h-full bg-[#169cb2] w-0 transition-all duration-700"></div></div>
                 <div class="flex justify-between metadata">
                     <span id="question-num" style="color:var(--teal)">Phase 01 / 20</span>
                     <button id="back-btn" onclick="prevQuestion()" class="hidden opacity-40 hover:opacity-100 uppercase tracking-widest text-[8px]">← Prev</button>
                 </div>
             </div>
-            <h2 id="question-text" class="text-lg md:text-2xl serif leading-relaxed font-medium text-[#302D2D]"></h2>
-            <div id="options-container" class="space-y-0.5 pt-4"></div>
+            <h2 id="question-text" class="text-xl serif leading-relaxed font-medium text-[#302D2D]"></h2>
+            <div id="options-container" class="space-y-0.5 pt-6"></div>
         </div>
         <p class="text-[8px] text-center mt-auto pt-10 tracking-[0.4em] uppercase opacity-10 italic">Archive Study 云树cloudtree</p>
     </section>
 
-    <!-- 4. 结果页 (极致脱脂版) -->
+    <!-- 4. 结果页 -->
     <section id="result-screen" class="hidden w-full flex flex-col items-center min-h-screen fade-in pb-40 relative">
         <div class="fixed inset-0 theme-charcoal -z-10"></div>
         
@@ -169,27 +168,24 @@
                 
                 <div class="long-strip-container">
                     
-                    <!-- 报告标题 (雅青色应用) -->
-                    <div class="bg-white p-8 border border-[rgba(48,45,45,0.03)] text-center space-y-2">
+                    <div class="bg-white p-8 border border-[rgba(48,45,45,0.03)] text-center space-y-2 shadow-sm">
                         <div class="metadata" style="color:var(--teal)">Final Report</div>
                         <h2 class="text-2xl serif font-black italic tracking-tighter uppercase" style="color:var(--teal)">女哲学家探测报告</h2>
                         <div class="w-8 h-[1px] bg-[#169cb2] mx-auto opacity-30 mt-1"></div>
                     </div>
 
-                    <!-- 精神原型 (名字调小, 雅青色) -->
-                    <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] relative shadow-sm">
+                    <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] relative shadow-sm text-left">
                         <div class="metadata mb-4 text-[#A39F9F] font-bold">Primary Archetype</div>
                         <div class="space-y-4">
                             <h3 id="mentor-name" class="text-xl serif font-bold tracking-widest uppercase" style="color:var(--teal)"></h3>
                             <p id="mentor-quote" class="text-[13.5px] italic text-gray-500 font-light leading-relaxed"></p>
                             <div class="pt-4 border-t border-gray-50">
-                                <span class="metadata">Main Work / 代表作:</span>
+                                <span class="metadata text-[8px]">Main Work / 代表作:</span>
                                 <p id="mentor-work" class="text-[11px] font-bold mt-1 text-[#302D2D] uppercase tracking-widest"></p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 思想符文 -->
                     <div class="bg-white p-8 border border-[rgba(48,45,45,0.03)] flex flex-col items-center shadow-sm">
                         <div class="metadata mb-8 self-start">Soul Sigil / 思想符文</div>
                         <div class="w-full aspect-square px-2">
@@ -197,40 +193,36 @@
                         </div>
                     </div>
 
-                    <!-- 深度解读 -->
                     <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] text-left shadow-sm">
                         <div class="metadata mb-4 text-[#A39F9F]">Interpretation / 深度分析</div>
                         <p id="result-desc" class="text-[12.5px] leading-relaxed text-gray-600 font-light text-justify"></p>
                     </div>
 
-                    <!-- 档案馆 (无高度浪费) -->
                     <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] shadow-sm">
                         <div class="flex justify-between items-center mb-6">
                             <div class="metadata">解锁更多女哲学家</div>
                             <button onclick="changeMapPage(1)" class="text-[8px] border border-[#169cb2] text-[#169cb2] px-2 py-0.5 font-bold">REFRESH</button>
                         </div>
-                        <div id="full-map-archive" class="space-y-0.5"></div>
+                        <div id="full-map-archive" class="space-y-0.5 text-left"></div>
                         <div class="flex justify-center gap-1.5 mt-6" id="pagination-dots"></div>
                     </div>
 
-                    <!-- 书单 -->
                     <div class="p-8 bg-[#F7F7F5] border border-[rgba(48,45,45,0.03)] shadow-inner">
                         <div class="metadata mb-6">Bibliography / 书单</div>
                         <div id="book-list" class="space-y-3 text-gray-500 font-light text-[11px] text-left"></div>
                     </div>
 
-                    <!-- QR 预留位 (xhs-qr.png) -->
                     <div class="p-8 bg-white border border-[rgba(48,45,45,0.03)] text-center space-y-4 shadow-sm">
                         <div class="metadata" style="color:var(--teal)">Connect</div>
                         <div class="qr-placeholder">
-                             <img src="xhs-qr.png" alt="QR Code" class="w-12 h-12 grayscale opacity-30" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'40\' height=\'40\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23169cb2\' stroke-width=\'1.5\'%3E%3Crect x=\'3\' y=\'3\' width=\'7\' height=\'7\'/%3E%3Crect x=\'14\' y=\'3\' width=\'7\' height=\'7\'/%3E%3Crect x=\'3\' y=\'14\' width=\'7\' height=\'7\'/%3E%3Cpath d=\'M14 14h3m3 0h1m-4 3h1m3 0h1m-4 3h1m3 0h1\'/%3E%3C/svg%3E'">
+                             <!-- 将二维码命名为 xhs-qr.png 上传后，img会自动显示 -->
+                             <img src="xhs-qr.png" alt="QR Code" class="w-12 h-12 grayscale opacity-30" onerror="this.style.display='none'">
                         </div>
                         <p class="text-[8px] text-gray-400 tracking-widest uppercase italic">© 云树cloudtree</p>
                     </div>
                 </div>
             </div>
 
-            <!-- 操作 -->
             <div class="grid grid-cols-2 gap-4 mt-12 px-2">
                 <button onclick="location.reload()" class="py-5 bg-white/5 border border-white/20 text-white text-[10px] tracking-widest uppercase rounded-sm">Retry</button>
                 <button id="save-btn" onclick="saveAsImage()" class="py-5 bg-white text-[#302D2D] text-[10px] tracking-widest uppercase rounded-sm font-black shadow-2xl active:scale-95 transition-all">Save Image</button>
@@ -244,95 +236,95 @@
             "他者": "女性被定义为男性的附庸，本质由他人裁定。",
             "平庸之恶": "体制内因放弃思考导致道德灾难。",
             "表演性": "性别通过反复言行表演构建出的效应。",
-            "赛博格": "打破自然/文化边界的混杂身份。",
-            "交织性": "压迫并非孤立，而是多种身份维度的叠加。",
-            "注视": "对自己与他者苦难的一种深邃关注。"
+            "赛博格": "打破自然/文化边界的混杂身份形态。",
+            "交织性": "压迫并非孤立，而是多种维度因素的叠加。",
+            "注视": "对自己与他者苦难的一种深邃、非占有的关注。"
         };
 
         const philoData = {
             hypatia: { name: "海帕提娅", quote: "保留你思考的权利。因为即使是错误的思考，也比不思考要好。", work: "《天文学评注》", desc: "你是理性的坚实拥簇。在混乱中仰望永恒的逻辑与秩序。", tags: ["理智", "秩序"], books: ["《海帕提娅传》"], dims: [95, 20, 30, 10, 80, 70], map: "数学、天文学、新柏拉图主义" },
-            wollstonecraft: { name: "玛丽·沃斯通克拉夫特", quote: "我不希望女性拥有支配男性的权力，而是拥有支配她们自身权力的权利。", work: "《为女权辩护》", desc: "启蒙之光。坚信理性没有性别，尊严源于独立。", tags: ["独立", "教育"], books: ["《为女权辩护》"], dims: [70, 80, 50, 60, 80, 95], map: "公民权利、教育平权" },
-            arendt: { name: "汉娜·阿伦特", quote: "平庸之恶源于拒绝思考，拒绝站在他人的立场去感知世界。", work: "《人的境况》", desc: "公共领域守护者。认为自由在与他人的共同担当中显现。", tags: ["行动", "反平庸"], books: ["《人的境况》", "《平庸之恶》"], dims: [80, 95, 60, 70, 40, 90], map: "政治哲学、积极行动" },
-            beauvoir: { name: "西蒙娜·德·波伏娃", quote: "女人不是生来就是女人的，而是变成女人的。", work: "《第二性》", desc: "存在主义灵魂。生命是一场永恒的“自我生成”。", tags: ["生成", "主体性"], books: ["《第二性》"], dims: [75, 75, 40, 90, 95, 75], map: "存在主义、反客体化" },
-            weil: { name: "西蒙娜·薇依", quote: "关注是灵魂中最稀有、最纯粹的慷慨形式。", work: "《扎根》", desc: "近乎神圣的共情力。认为思想植根于对劳动的尊重。", tags: ["注视", "苦修"], books: ["《扎根》"], dims: [60, 60, 95, 40, 50, 80], map: "神秘主义、劳工正义" },
+            wollstonecraft: { name: "玛丽·沃斯通克拉夫特", quote: "我不希望女性拥有支配男性的权力，而是拥有支配她们自身权力的权利。", work: "《为女权辩护》", desc: "启蒙之光。坚信理性没有性别，尊严源于独立。", tags: ["独立", "契约"], books: ["《为女权辩护》"], dims: [70, 80, 50, 60, 80, 95], map: "公民权利、教育平权" },
+            arendt: { name: "汉娜·阿伦特", quote: "平庸之恶源于拒绝思考，拒绝站在他人的立场去感知世界。", work: "《人的境况》", desc: "公共领域守护者。认为自由在共同担当中显现。", tags: ["行动", "反平庸"], books: ["《人的境况》", "《平庸之恶》"], dims: [80, 95, 60, 70, 40, 90], map: "政治哲学、积极行动" },
+            beauvoir: { name: "西蒙娜·德·波伏娃", quote: "女人不是生来就是女人的，而是变成女人的。", work: "《第二性》", desc: "存在主义灵魂。生命是一场永恒的“自我生成”。", tags: ["生成", "主体性"], books: ["《第二性》"], dims: [75, 75, 40, 90, 95, 75], map: "存在主义、生成论" },
+            weil: { name: "西蒙娜·薇依", quote: "关注是灵魂中最稀有、最纯粹的慷慨形式。", work: "《扎根》", desc: "近乎神圣的共情力。认为思想植根于对他人的注视。", tags: ["注视", "苦修"], books: ["《扎根》"], dims: [60, 60, 95, 40, 50, 80], map: "神秘主义、劳工正义" },
             butler: { name: "朱迪斯·巴特勒", quote: "身份不是固定的事实，而是一种被迫的重复表演。", work: "《性别麻烦》", desc: "规则解构者。在权力的缝隙中寻找反抗的可能。", tags: ["表演", "解构"], books: ["《性别麻烦》"], dims: [70, 60, 50, 95, 85, 60], map: "酷儿理论、解构主义" },
-            haraway: { name: "唐娜·哈拉维", quote: "我宁愿做一个赛博格，也不愿做一个女神。", work: "《赛博格宣言》", desc: "未来叙事者。打破自然与文化的边界，拥抱技术混杂。", tags: ["赛博格", "后人类"], books: ["《赛博格宣言》"], dims: [70, 65, 40, 95, 70, 60], map: "科学论、赛博女性主义" },
-            hooks: { name: "贝尔·胡克斯", quote: "爱是走向自由的一种行动。", work: "《关于爱的一切》", desc: "交织性先锋。正义必须包含爱，解放必须打破阶级枷锁。", tags: ["爱", "交叉"], books: ["《关于爱的一切》"], dims: [60, 80, 90, 85, 60, 90], map: "黑人女性主义、关怀政治" },
-            davis: { name: "安吉拉·戴维斯", quote: "自由是一场无止境的奋斗。", work: "《女性，种族与阶级》", desc: "革命者。致力于废除压迫结构。认为女性解放不能脱离阶级分析。", tags: ["革命", "斗争"], books: ["《女性，种族与阶级》"], dims: [50, 98, 60, 85, 50, 95], map: "马克思主义女性主义" },
-            nussbaum: { name: "玛莎·努斯鲍姆", quote: "正义需要一种富有成效的情感。", work: "《能力的创造》", desc: "理智情感主义者。认为情感即认知，用‘能力方法’衡量福祉。", tags: ["能力", "脆弱"], books: ["《能力的创造》"], dims: [85, 75, 85, 40, 60, 90], map: "政治哲学、能力进路" },
-            stein: { name: "艾德丝·施泰因", quote: "每一个进入灵魂的词，都是一种命运。", work: "《对共情的本质研究》", desc: "现象学朝圣者。在共情深处探寻本质，寻找理性和神性的融合。", tags: ["现象学", "共情"], books: ["《对共情的本质研究》"], dims: [90, 30, 90, 20, 70, 60], map: "现象学、共情研究" },
-            luxemburg: { name: "罗莎·卢森堡", quote: "自由永远是那些思考方式不同的人的自由。", work: "《社会改良还是革命》", desc: "思想闪电。主张彻底的民主与自发的行动。", tags: ["民主", "自发"], books: ["《社会改良还是革命》"], dims: [80, 98, 50, 90, 40, 95], map: "马克思主义、反威权" },
-            mernissi: { name: "法蒂玛·梅尔尼西", quote: "如果我们不书写历史，别人就会替我们书写。", work: "《后宫背后的面纱》", desc: "跨文化破墙者。在宗教、历史与平权间通过重读经典挑战偏见。", tags: ["跨文化", "重写"], books: ["《后宫背后的面纱》"], dims: [80, 70, 60, 85, 75, 85], map: "伊斯兰女性主义" },
-            foot: { name: "菲利帕·福特", quote: "美德是人类繁荣的一种卓越表现。", work: "《美德与罪过》", desc: "美德伦理复兴者。回归人的性格与卓越中。逻辑严密的观察家。", tags: ["美德", "逻辑"], books: ["《美德与罪过》"], dims: [90, 40, 70, 30, 80, 80], map: "美德伦理学、分析哲学" },
+            haraway: { name: "唐娜·哈拉维", quote: "我宁愿做一个赛博格，也不愿做一个女神。", work: "《赛博格宣言》", desc: "未来叙事者。打破自然与文化的边界，拥抱混杂。", tags: ["赛博格", "后人类"], books: ["《赛博格宣言》"], dims: [70, 65, 40, 95, 70, 60], map: "科学论、后人类主义" },
+            hooks: { name: "贝尔·胡克斯", quote: "爱是走向自由的一种行动。", work: "《关于爱的一切》", desc: "交织性先锋。正义包含爱，解放需打破多重枷锁。", tags: ["爱", "交叉"], books: ["《关于爱的一切》"], dims: [60, 80, 90, 85, 60, 90], map: "黑人女性主义、关怀政治" },
+            davis: { name: "安吉拉·戴维斯", quote: "自由是一场无止境的奋斗。", work: "《女性，种族与阶级》", desc: "革命者。认为女性解放不能脱离阶级与种族分析。", tags: ["革命", "斗争"], books: ["《女性，种族与阶级》"], dims: [50, 98, 60, 85, 50, 95], map: "马克思主义女性主义" },
+            nussbaum: { name: "玛莎·努斯鲍姆", quote: "正义需要一种富有成效的情感。", work: "《能力的创造》", desc: "理智情感主义者。认为情感即认知，用能力衡量福祉。", tags: ["能力", "脆弱"], books: ["《能力的创造》"], dims: [85, 75, 85, 40, 60, 90], map: "政治哲学、能力进路" },
+            stein: { name: "艾德丝·施泰因", quote: "每一个进入灵魂的词，都是一种命运。", work: "《对共情的本质研究》", desc: "现象学朝圣者。在共情深处探寻本质，寻找融合。", tags: ["现象学", "共情"], books: ["《对共情的本质研究》"], dims: [90, 30, 90, 20, 70, 60], map: "现象学、共情研究" },
+            luxemburg: { name: "罗莎·卢森堡", quote: "自由永远是那些思考方式不同的人的自由。", work: "《社会改良还是革命》", desc: "思想闪电。主张彻底的民主与自发的政治行动。", tags: ["民主", "自发"], books: ["《社会改良还是革命》"], dims: [80, 98, 50, 90, 40, 95], map: "马克思主义、反威权" },
+            mernissi: { name: "法蒂玛·梅尔尼西", quote: "如果我们不书写历史，别人就会替我们书写。", work: "《后宫背后的面纱》", desc: "跨文化破墙者。通过重读经典挑战父权与西方偏见。", tags: ["跨文化", "重写"], books: ["《后宫背后的面纱》"], dims: [80, 70, 60, 85, 75, 85], map: "伊斯兰女性主义" },
+            foot: { name: "菲利帕·福特", quote: "美德是人类繁荣的一种卓越表现。", work: "《美德与罪过》", desc: "美德伦理复兴者。回归人的性格与卓越中。", tags: ["美德", "逻辑"], books: ["《美德与罪过》"], dims: [90, 40, 70, 30, 80, 80], map: "美德伦理学、分析哲学" },
             anscombe: { name: "伊丽莎白·安斯康姆", quote: "意图是通向行动本质的钥匙。", work: "《意图》", desc: "逻辑剖析者。挑战伦理学框架，智性的极致。", tags: ["解析", "意图"], books: ["《意图》"], dims: [98, 30, 40, 50, 85, 70], map: "分析伦理学、行动论" }
         };
 
         const questions = [
-            { t: "面对社会潜规则（如职场酒局），你的反应是：", o: [
+            { t: "面对社会潜规则（如职场酒局），你的第一反应通常是：", o: [
                 { t: "分析其存在的利益链条与逻辑谬误", p: ["hypatia", "anscombe"] },
-                { t: "认为这是一种必须配合演出的剧本", p: ["butler", "beauvoir"] },
+                { t: "认为这是一种必须配合演出的角色剧本", p: ["butler", "beauvoir"] },
                 { t: "关心这种规则是否正在羞辱具体的个人", p: ["weil", "hooks"] },
                 { t: "呼吁集体抵制，试图改变这种腐坏惯例", p: ["arendt", "luxemburg"] }
             ]},
             { t: "当你深陷某种‘容貌焦虑’时，你会倾向于：", o: [
                 { t: "意识到这不仅是审美，更是一场权力规训", p: ["butler", "mernissi"] },
-                { t: "提醒自己身体是生成的，不受定义限制", p: ["beauvoir", "haraway"] },
+                { t: "提醒自己：身体是生成的，不受定义的限制", p: ["beauvoir", "haraway"] },
                 { t: "通过自律和自我完善来夺回掌控感", p: ["wollstonecraft", "foot"] },
-                { t: "转向内心，认为灵魂注视比表象更深邃", p: ["weil", "stein"] }
+                { t: "转向内心，认为灵魂的注视比表象更深邃", p: ["weil", "stein"] }
             ]},
-            { t: "看到算法生成的‘虚拟偶像’，你会想：", o: [
+            { t: "如果你看到一个完全由算法生成的‘虚拟偶像’，你会想：", o: [
                 { t: "这是人类与技术混杂的、后人类的胜利", p: ["haraway", "butler"] },
                 { t: "它缺乏真实存在的厚度，无法与人对话", p: ["arendt", "beauvoir"] },
-                { t: "它是流水线产物，是理性极致僵化的表现", p: ["hypatia", "anscombe"] },
+                { t: "它是流水线产物，是理性的极致僵化表现", p: ["hypatia", "anscombe"] },
                 { t: "它掩盖了底层劳工或数据的真实剥削", p: ["davis", "hooks"] }
             ]},
-            { t: "在深夜的孤独中，最能让你感到安宁的是：", o: [
-                { t: "在书籍与思维中构建宇宙秩序", p: ["hypatia", "foot"] },
-                { t: "对万物痛苦的静谧关注", p: ["weil", "stein"] },
-                { t: "策划下一次自我超越或改变的行动", p: ["beauvoir", "luxemburg"] },
-                { t: "想起与志同道合者讨论时的共鸣", p: ["arendt", "hooks"] }
+            { t: "在深夜的极度孤独中，最能让你感到安宁的是：", o: [
+                { t: "在书籍与严密的思维中构建宇宙秩序", p: ["hypatia", "foot"] },
+                { t: "一种近似祈祷的、对万物痛苦的静谧关注", p: ["weil", "stein"] },
+                { t: "策划下一次自我超越或彻底改变的行动", p: ["beauvoir", "luxemburg"] },
+                { t: "回想起与志同道合者在公共讨论时的共鸣", p: ["arendt", "hooks"] }
             ]},
-            { t: "必须在一段感情中做出某种‘牺牲’，你会：", o: [
-                { t: "审视这种牺牲是否基于刻板印象的表演", p: ["butler", "mernissi"] },
-                { t: "认为牺牲必须服务于双方主体性的提升", p: ["beauvoir", "wollstonecraft"] },
+            { t: "如果你必须在一段感情中做出某种‘牺牲’，你会：", o: [
+                { t: "审视这种牺牲是否基于性别刻板印象的表演", p: ["butler", "mernissi"] },
+                { t: "认为牺牲必须服务于双方主体性的共同提升", p: ["beauvoir", "wollstonecraft"] },
                 { t: "这是一种消除自我的注视，具有神圣意义", p: ["weil", "stein"] },
                 { t: "绝不牺牲自由，独立是个体尊严的基石", p: ["hypatia", "anscombe"] }
             ]},
             { t: "面对层出不穷的网络热点，你的习惯是：", o: [
-                { t: "保持智性诚实，不被集体情绪裹挟", p: ["arendt", "hypatia"] },
-                { t: "关注其中弱势群体是否受到了叠加压迫", p: ["hooks", "davis"] },
+                { t: "保持绝对的智性诚实，不被集体情绪裹挟", p: ["arendt", "hypatia"] },
+                { t: "关注其中弱势群体是否受到了多重压迫", p: ["hooks", "davis"] },
                 { t: "解构热点背后的标签，看谁在操纵定义", p: ["butler", "haraway"] },
                 { t: "在混乱中寻找永恒的美德与意图", p: ["foot", "anscombe"] }
             ]},
             { t: "你如何看待‘教育’这件事？", o: [
-                { t: "它是赋予每个人平等竞争权利的契约", p: ["wollstonecraft", "nussbaum"] },
-                { t: "它是打破阶级固化与资本压迫的武器", p: ["davis", "luxemburg"] },
-                { t: "它是为了开启民智，实现理性的飞跃", p: ["hypatia", "foot"] },
-                { t: "它是学会自由‘生成’自我的实验室", p: ["beauvoir", "butler"] }
+                { t: "它是赋予每个人平等社会竞争权利的契约", p: ["wollstonecraft", "nussbaum"] },
+                { t: "它是打破阶级固化与资本压迫的革命武器", p: ["davis", "luxemburg"] },
+                { t: "它是为了开启民智，实现理性的自我飞跃", p: ["hypatia", "foot"] },
+                { t: "它是让人们学会如何自由‘生成’自我的实验室", p: ["beauvoir", "butler"] }
             ]},
-            { t: "当你在路边看到无家可归者，瞬间念头是：", o: [
-                { t: "停下脚步，给予毫无占有欲的深度注视", p: ["weil", "stein"] },
-                { t: "反思整个社会分配体系的正义性缺失", p: ["nussbaum", "davis"] },
-                { t: "不仅是捐赠，更应发起改变该阶级的行动", p: ["luxemburg", "hooks"] },
-                { t: "分析其作为‘人’在社会坐标中的尊严受损", p: ["arendt", "wollstonecraft"] }
+            { t: "当你在路边看到一个无家可归者，你的瞬间念头是：", o: [
+                { t: "停下脚步，给予一种毫无占有欲的深度注视", p: ["weil", "stein"] },
+                { t: "反思整个社会分配体系的正义性与功能缺失", p: ["nussbaum", "davis"] },
+                { t: "不仅是捐赠，更应发起改变该阶级处境的行动", p: ["luxemburg", "hooks"] },
+                { t: "分析其作为‘人’在社会坐标中的基本尊严受损", p: ["arendt", "wollstonecraft"] }
             ]},
-            { t: "关于‘传统习俗’，你的本能立场是：", o: [
-                { t: "这是父权制与资本逻辑在现代的延续", p: ["hooks", "mernissi"] },
-                { t: "解构陈腐仪式的合法性，追求流动性", p: ["butler", "haraway"] },
-                { t: "如果有害于主体自由，就必须被推翻", p: ["beauvoir", "wollstonecraft"] },
-                { t: "理性分析其意图，看是否符合繁荣", p: ["anscombe", "foot"] }
+            { t: "关于‘传统习俗’（如彩礼或相亲），你的本能是：", o: [
+                { t: "这是父权制与资本逻辑在现代的隐蔽延续", p: ["hooks", "mernissi"] },
+                { t: "解构这种陈腐仪式的合法性，追求流动性", p: ["butler", "haraway"] },
+                { t: "如果有害于主体的自由，就必须被推翻", p: ["beauvoir", "wollstonecraft"] },
+                { t: "理性分析其意图，看是否符合人类繁荣", p: ["anscombe", "foot"] }
             ]},
             { t: "如果 AI 能够代替你完成所有工作，你会：", o: [
-                { t: "欢呼解放，全身心追求理性之光", p: ["hypatia", "foot"] },
-                { t: "警惕技术对公共空间的侵蚀与思考停滞", p: ["arendt", "beauvoir"] },
-                { t: "拥抱赛博格未来，探索新的存在形式", p: ["haraway", "butler"] },
-                { t: "关注失去劳作权的民众是否被彻底抛弃", p: ["weil", "davis"] }
+                { t: "欢呼解放，终于可以全身心追求理性之光", p: ["hypatia", "foot"] },
+                { t: "警惕技术对公共空间的侵蚀与思考的停滞", p: ["arendt", "beauvoir"] },
+                { t: "拥抱赛博格未来，探索新的生命存在形式", p: ["haraway", "butler"] },
+                { t: "关注失去劳作权的普通民众是否被彻底抛弃", p: ["weil", "davis"] }
             ]},
-            { t: "面对性格迥异的人，你理解ta的方式是：", o: [
-                { t: "通过共情深入对方现象界，感知命运", p: ["stein", "weil"] },
-                { t: "分析其行为背后的社会阶级与族裔背景", p: ["hooks", "davis"] },
+            { t: "面对一个性格迥异的人，你理解ta的方式通常是：", o: [
+                { t: "通过共情深入对方的现象界，感知其命运", p: ["stein", "weil"] },
+                { t: "分析其行为背后的社会阶级与种族背景", p: ["hooks", "davis"] },
                 { t: "意识到每个人都是一场正在生成的表演", p: ["butler", "beauvoir"] },
-                { t: "用逻辑推导其动机，寻找知性共鸣点", p: ["hypatia", "anscombe"] }
+                { t: "用逻辑推导其动机，寻找知性的共鸣点", p: ["hypatia", "anscombe"] }
             ]},
             { t: "你认为‘自由’最真实的体验在于：", o: [
                 { t: "在与他人共同改变世界的行动瞬间", p: ["arendt", "luxemburg"] },
@@ -340,29 +332,29 @@
                 { t: "通过思考触及宇宙不变真理的那个点", p: ["hypatia", "foot"] },
                 { t: "完全不被外界定义，持续自我生成的动态", p: ["beauvoir", "wollstonecraft"] }
             ]},
-            { t: "遭受不公委屈时，最有效的自我疗愈是：", o: [
+            { t: "当你遭受不公的委屈时，你最有效的自我疗愈是：", o: [
                 { t: "将痛苦转化为分析权力结构的智性力量", p: ["butler", "hooks"] },
-                { t: "提醒自己遭遇只是生成自我的磨刀石", p: ["beauvoir", "anscombe"] },
-                { t: "进入寂静，在更高维度的秩序中释怀", p: ["weil", "stein"] },
-                { t: "与同道者交流，将遭遇转化为公共议题", p: ["arendt", "davis"] }
+                { t: "提醒自己，这些遭遇只是生成自我的磨刀石", p: ["beauvoir", "anscombe"] },
+                { t: "进入一种寂静，在更高维度的秩序中释怀", p: ["weil", "stein"] },
+                { t: "与同道者交流，将私人遭遇转化为公共议题", p: ["arendt", "davis"] }
             ]},
             { t: "如果你有一笔巨款，最想投入的领域是：", o: [
-                { t: "建立一个跨越偏见的教育平权体系", p: ["wollstonecraft", "nussbaum"] },
+                { t: "建立一个跨越偏见的基础教育平权体系", p: ["wollstonecraft", "nussbaum"] },
                 { t: "资助激进研究，打破身份与技术壁垒", p: ["haraway", "butler"] },
-                { t: "直接改善底层劳工的扎根环境与尊严", p: ["weil", "luxemburg"] },
-                { t: "扩建公共广场与图书馆，复兴对话", p: ["arendt", "hypatia"] }
+                { t: "直接改善底层劳工的扎根环境与生存尊严", p: ["weil", "luxemburg"] },
+                { t: "扩建公共广场与图书馆，复兴对话的艺术", p: ["arendt", "hypatia"] }
             ]},
             { t: "你对‘成功’的最终定义是：", o: [
-                { t: "保持了极高的智性严谨与诚实", p: ["anscombe", "hypatia"] },
-                { t: "从未向体制妥协，参与了伟大变革", p: ["luxemburg", "davis"] },
-                { t: "通过思想修补了世界的某种裂痕", p: ["weil", "hooks"] },
-                { t: "始终是自己的主宰，完成自我超越", p: ["beauvoir", "wollstonecraft"] }
+                { t: "在一生中保持了极高的智性严谨与诚实", p: ["anscombe", "hypatia"] },
+                { t: "从未向体制妥协，参与了伟大的变革行动", p: ["luxemburg", "davis"] },
+                { t: "通过自己的思想，修补了世界的某种裂痕", p: ["weil", "hooks"] },
+                { t: "始终是自己的主宰，完成了一场自我超越", p: ["beauvoir", "wollstonecraft"] }
             ]},
-            { t: "面对社交媒体‘人设’，你的态度是：", o: [
-                { t: "看穿表演本质，意识到身份虚幻性", p: ["butler", "mernissi"] },
+            { t: "面对社交媒体上的‘人设’，你的态度是：", o: [
+                { t: "看穿其表演本质，意识到身份的虚幻性", p: ["butler", "mernissi"] },
                 { t: "觉得这是一种逃避真实存在的软弱表现", p: ["beauvoir", "arendt"] },
-                { t: "分析算法人设对个体能力发展的限制", p: ["nussbaum", "haraway"] },
-                { t: "认为这些标签掩盖了真实的阶级处境", p: ["hooks", "davis"] }
+                { t: "分析这种算法人设对个体能力发展的限制", p: ["nussbaum", "haraway"] },
+                { t: "认为这些标签掩盖了真实的阶级与处境", p: ["hooks", "davis"] }
             ]},
             { t: "如果你能拥有一个‘特异功能’，你希望是：", o: [
                 { t: "瞬间理解宇宙所有底层逻辑的能力", p: ["hypatia", "anscombe"] },
@@ -370,23 +362,23 @@
                 { t: "瞬间消除所有人心中刻板偏见的能力", p: ["wollstonecraft", "hooks"] },
                 { t: "能够瞬间集结千万人发起正义革命的能力", p: ["luxemburg", "davis"] }
             ]},
-            { t: "评价一个人的道德时，你最看重：", o: [
-                { t: "ta在极端情况下表现出的卓越美德", p: ["foot", "stein"] },
+            { t: "当你评价一个人的道德时，你最看重：", o: [
+                { t: "ta在极端情况下表现出的性格卓越与美德", p: ["foot", "stein"] },
                 { t: "ta的行为是否具有清晰且诚实的意图", p: ["anscombe", "hypatia"] },
-                { t: "ta是否敢于挑战压迫性的权力结构", p: ["davis", "butler"] },
-                { t: "ta在日常生活中对他人的关怀深度", p: ["hooks", "weil"] }
+                { t: "ta是否敢于挑战压迫他人的社会权力结构", p: ["davis", "butler"] },
+                { t: "ta在日常生活中对他人的关怀与联结深度", p: ["hooks", "weil"] }
             ]},
             { t: "关于‘金钱与物质’，你的哲学立场是：", o: [
-                { t: "它是人格保障，但不应凌驾于理性之上", p: ["wollstonecraft", "foot"] },
-                { t: "它是统治工具，必须被彻底重新分配", p: ["luxemburg", "davis"] },
-                { t: "它往往成为‘注视’的遮蔽，追求极简", p: ["weil", "stein"] },
+                { t: "它是独立人格的保障，但不应凌驾于理性之上", p: ["wollstonecraft", "foot"] },
+                { t: "它是统治阶级的工具，必须被重新分配", p: ["luxemburg", "davis"] },
+                { t: "它往往成为‘注视’万物的遮蔽，应追求极简", p: ["weil", "stein"] },
                 { t: "它是主体生成的资源，而非存在的目的", p: ["beauvoir", "nussbaum"] }
             ]},
-            { t: "你希望墓志铭上写着什么？", o: [
+            { t: "你希望自己的墓志铭上写着什么？", o: [
                 { t: "“在这里，有一颗永不向偏见屈服的灵魂。”", p: ["wollstonecraft", "hypatia"] },
-                { t: "“ta在这里通过行动，让世界稍微改变。”", p: ["arendt", "luxemburg"] },
+                { t: "“ta在这里通过行动，让世界稍微改变了一点。”", p: ["arendt", "luxemburg"] },
                 { t: "“ta始终注视着那些被世界遗忘的角落。”", p: ["weil", "hooks"] },
-                { t: "“ta不仅是一个人，是一场流动的奇迹。”", p: ["beauvoir", "haraway"] }
+                { t: "“ta不仅是一个人，ta是一场流动的生命奇迹。”", p: ["beauvoir", "haraway"] }
             ]}
         ];
 
@@ -398,7 +390,7 @@
 
         function verifyAccess() {
             const input = document.getElementById('access-code').value.trim().toLowerCase();
-            if (input === 'cloudtree') {
+            if (input === 'tree') {
                 document.getElementById('access-screen').classList.add('hidden');
                 document.getElementById('welcome-screen').classList.remove('hidden');
             } else {
@@ -410,7 +402,7 @@
         function showDefinition(word) {
             document.getElementById('modal-title').innerText = word;
             const data = Object.values(philoData).find(p => p.name === word);
-            document.getElementById('modal-content').innerText = dictionary[word] || data?.desc || "检索中...";
+            document.getElementById('modal-content').innerText = dictionary[word] || data?.desc || "正在检索数据...";
             document.getElementById('modal-overlay').style.display = 'flex';
         }
         function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
