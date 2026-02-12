@@ -61,8 +61,27 @@
             text-align: left;
         }
         .option-box:hover {
-            border-color: var(--teal);
+            border-color: rgba(22, 156, 178, 0.3);
             background: #F8FAFB;
+        }
+        .option-box.selected {
+            border-color: var(--teal);
+            background: #F0F7F9;
+            box-shadow: inset 0 0 0 1px var(--teal);
+        }
+
+        .insight-card {
+            background: rgba(22, 156, 178, 0.04);
+            border-left: 2px solid var(--teal);
+            padding: 1rem;
+            margin-top: 0.2rem;
+            margin-bottom: 0.8rem;
+            animation: slideDown 0.4s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .archive-entry {
@@ -120,7 +139,7 @@
 
     <!-- 1. 验证页 -->
     <section id="access-screen" class="min-h-screen w-full flex flex-col items-center justify-center space-y-16 fade-in theme-charcoal px-12 text-white text-center">
-        <div class="space-y-4">
+        <div class="text-center space-y-4">
             <div class="metadata opacity-40">Entry Control</div>
             <h2 class="text-3xl serif font-light tracking-widest italic text-white text-nowrap">女哲学家 思想坐标</h2>
         </div>
@@ -139,7 +158,7 @@
         </header>
         <div class="space-y-16 flex flex-col items-center">
             <p class="text-[11px] leading-relaxed text-[#8C8888] font-light tracking-widest max-w-xs uppercase text-white/60">
-                20 道关于自我的深度探测<br>
+                30 道关于自我的深度探测<br>
                 在 15 位先锋思想家的版图中发现真实
             </p>
             <button onclick="startQuiz()" class="px-16 py-6 bg-white text-[#302D2D] text-[10px] tracking-[0.6em] uppercase font-black shadow-2xl active:scale-95">START</button>
@@ -148,17 +167,30 @@
     </section>
 
     <!-- 3. 测试页 -->
-    <section id="quiz-screen" class="hidden w-full max-w-xl px-12 py-16 flex flex-col min-h-screen fade-in bg-[#FBFCFA]">
-        <div class="space-y-12">
-            <div class="space-y-6">
+    <section id="quiz-screen" class="hidden w-full max-w-xl px-12 py-12 flex flex-col min-h-screen fade-in bg-[#FBFCFA]">
+        <div class="space-y-8">
+            <div class="space-y-4">
                 <div class="w-full h-[0.5px] bg-gray-100"><div id="progress" class="h-full bg-[#169cb2] w-0 transition-all duration-700"></div></div>
                 <div class="flex justify-between metadata">
-                    <span id="question-num" style="color:var(--teal)">Phase 01 / 20</span>
+                    <span id="question-num" style="color:var(--teal)">Phase 01 / 30</span>
                     <button id="back-btn" onclick="prevQuestion()" class="hidden opacity-40 hover:opacity-100 uppercase tracking-widest text-[8px]">← Prev</button>
                 </div>
             </div>
-            <h2 id="question-text" class="text-xl serif leading-relaxed font-medium text-[#302D2D]"></h2>
-            <div id="options-container" class="space-y-0.5 pt-4"></div>
+            <h2 id="question-text" class="text-lg md:text-xl serif leading-relaxed font-medium text-[#302D2D]"></h2>
+            <div id="options-container" class="space-y-0.5 pt-2"></div>
+            
+            <!-- 实时解读容器：现在支持切换查看 -->
+            <div id="insight-display" class="hidden insight-card">
+                <div class="metadata mb-2" style="color:var(--teal)">Resonance Interpretation</div>
+                <p id="insight-body" class="text-[12px] leading-relaxed text-[#169cb2] font-medium"></p>
+                <div class="mt-4 pt-2 border-t border-[#169cb2]/10">
+                   <p class="text-[10px] text-gray-400 uppercase tracking-widest italic">思想对齐: <span id="insight-names" class="text-[#302D2D] font-bold not-italic"></span></p>
+                </div>
+            </div>
+            
+            <button id="continue-btn" onclick="nextQuestion()" class="hidden w-full py-4 bg-[#169cb2] text-white text-[11px] tracking-[0.4em] uppercase font-bold shadow-lg fade-in">
+                继续探索 / NEXT
+            </button>
         </div>
         <p class="text-[8px] text-center mt-auto pt-10 tracking-[0.4em] uppercase opacity-10 italic">Archive Study 云树cloudtree</p>
     </section>
@@ -172,17 +204,28 @@
                 
                 <div class="long-strip-container">
                     
-                    <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] text-center space-y-1 shadow-sm">
-                        <div class="metadata" style="color:var(--teal)">Report</div>
-                        <h2 class="text-xl serif font-black italic tracking-tighter uppercase" style="color:var(--teal)">女哲学家探测报告</h2>
-                        <div class="w-6 h-[0.5px] bg-[#169cb2] mx-auto opacity-30 mt-1"></div>
+                    <div class="bg-white p-8 border border-[rgba(48,45,45,0.03)] text-center space-y-2">
+                        <div class="metadata" style="color:var(--teal)">Final Report</div>
+                        <h2 class="text-2xl serif font-black italic tracking-tighter uppercase" style="color:var(--teal)">女哲学家探测报告</h2>
+                        <div class="w-8 h-[1px] bg-[#169cb2] mx-auto opacity-30 mt-1"></div>
                     </div>
 
                     <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] relative shadow-sm text-left">
                         <div class="metadata mb-4 text-[#A39F9F] font-bold">Primary Archetype</div>
                         <div class="space-y-4">
-                            <h3 id="mentor-name" class="text-lg serif font-bold tracking-widest uppercase" style="color:var(--teal)"></h3>
+                            <h3 id="mentor-name" class="text-xl serif font-bold tracking-widest uppercase" style="color:var(--teal)"></h3>
                             <p id="mentor-quote" class="text-[13px] italic text-gray-500 font-light leading-relaxed"></p>
+                            
+                            <div class="pt-3 border-t border-gray-50">
+                                <div class="metadata text-[8px] mb-2" style="color:var(--teal)">Logic Matrix / 核心思想</div>
+                                <p id="mentor-thought" class="text-[11.5px] leading-relaxed text-[#302D2D] font-medium text-justify"></p>
+                            </div>
+
+                            <div class="pt-3 border-t border-gray-50">
+                                <div class="metadata text-[8px] mb-2" style="color:var(--teal)">Modern Resonance / 当代共鸣</div>
+                                <p id="mentor-resonance" class="text-[11.5px] leading-relaxed text-gray-500 font-light text-justify"></p>
+                            </div>
+
                             <div class="pt-3 border-t border-gray-50">
                                 <span class="metadata text-[8px]">Major Work / 代表作:</span>
                                 <p id="mentor-work" class="text-[11px] font-bold mt-1 text-[#302D2D] uppercase tracking-widest"></p>
@@ -198,12 +241,17 @@
                     </div>
 
                     <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] text-left shadow-sm">
+                        <div class="metadata mb-4 text-[#A39F9F]">Insight Stubs / 灵感存根</div>
+                        <div id="insight-container" class="space-y-4"></div>
+                    </div>
+
+                    <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] text-left shadow-sm">
                         <div class="metadata mb-4 text-[#A39F9F]">Interpretation / 深度分析</div>
                         <p id="result-desc" class="text-[12px] leading-relaxed text-gray-600 font-light text-justify"></p>
                     </div>
 
                     <div class="bg-white p-6 border border-[rgba(48,45,45,0.03)] shadow-sm">
-                        <div class="flex justify-between items-center mb-4">
+                        <div class="flex justify-between items-center mb-6">
                             <div class="metadata">更多女哲学家</div>
                             <button onclick="changeMapPage(1)" class="text-[8px] border border-[#169cb2] text-[#169cb2] px-2 py-0.5 font-bold">REFRESH</button>
                         </div>
@@ -212,8 +260,8 @@
                     </div>
 
                     <div class="p-6 bg-[#F7F7F5] border border-[rgba(48,45,45,0.03)] shadow-inner">
-                        <div class="metadata mb-4">Bibliography / 书单</div>
-                        <div id="book-list" class="space-y-1 text-gray-500 font-light text-[11px] text-left"></div>
+                        <div class="metadata mb-4">Intellectual Syllabus / 进阶书单</div>
+                        <div id="book-list" class="space-y-1 text-gray-500 font-light text-[11px] text-left italic"></div>
                     </div>
 
                     <div class="p-6 bg-white border border-[rgba(48,45,45,0.03)] text-center space-y-4 shadow-sm">
@@ -226,7 +274,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mt-12 px-2">
+            <div class="grid grid-cols-2 gap-4 mt-8 px-2">
                 <button onclick="location.reload()" class="py-5 bg-white/5 border border-white/20 text-white text-[10px] tracking-widest uppercase rounded-sm">Retry</button>
                 <button id="save-btn" onclick="saveAsImage()" class="py-5 bg-white text-[#302D2D] text-[10px] tracking-widest uppercase rounded-sm font-black shadow-2xl active:scale-95 transition-all">Save Image</button>
             </div>
@@ -235,153 +283,213 @@
 
     <script>
         const dictionary = {
-            "父权制": "系统性将权力和资源赋予男性的社会结构。",
-            "他者": "女性被定义为男性的附庸，本质由他人裁定。",
-            "平庸之恶": "汉娜·阿伦特术语。指在体制下拒绝思考导致的道德灾难。",
-            "表演性": "性别通过反复言行表演构建出的效应。",
-            "赛博格": "打破自然/文化边界的混杂身份。",
-            "交织性": "压迫并非孤立，而是多种维度叠加。",
-            "注视": "对自己与他者苦难的一种深邃关注。"
+            "父权制": "男性垄断权力和资源的社会制度。",
+            "他者": "女性被定义为男性的附庸，其价值由他人裁定。",
+            "平庸之恶": "官僚体制下因放弃思考、盲从规则而导致的道德灾难。",
+            "表演性": "性别并非天生本能，而是通过社会反复排演构建出的效应。",
+            "赛博格": "打破自然与文化边界的隐喻，主张流动的混杂身份。",
+            "交织性": "压迫并非孤立存在，而是多种身份属性的叠加叠加。",
+            "注视": "一种非占有的、对自己与他者苦难的深度观照。"
         };
 
         const philoData = {
-            hypatia: { name: "海帕提娅", quote: "保留你思考的权利。因为即使是错误的思考，也比不思考要好。", work: "《天文学评注》", desc: "你是理性的坚实拥簇。在混乱中仰望永恒的逻辑与秩序。", tags: ["理智", "秩序"], books: ["《海帕提娅传》"], dims: [95, 20, 30, 10, 80, 70], map: "数学、天文学" },
-            wollstonecraft: { name: "玛丽·沃斯通克拉夫特", quote: "我不希望女性拥有支配男性的权力，而是拥有支配她们自身权力的权利。", work: "《为女权辩护》", desc: "启蒙之光。坚信理性没有性别，尊严源于独立。", tags: ["独立", "契约"], books: ["《为女权辩护》"], dims: [70, 80, 50, 60, 80, 95], map: "公民权利" },
-            arendt: { name: "汉娜·阿伦特", quote: "平庸之恶源于拒绝思考，拒绝站在他人的立场去感知世界。", work: "《人的境况》", desc: "公共领域守护者。认为自由在共同担当中显现。", tags: ["行动", "反平庸"], books: ["《人的境况》", "《平庸之恶》"], dims: [80, 95, 60, 70, 40, 90], map: "政治哲学" },
-            beauvoir: { name: "西蒙娜·德·波伏娃", quote: "女人不是生来就是女人的，而是变成女人的。", work: "《第二性》", desc: "存在主义灵魂。生命是一场永恒的“自我生成”。", tags: ["生成", "主体性"], books: ["《第二性》"], dims: [75, 75, 40, 90, 95, 75], map: "存在主义" },
-            weil: { name: "西蒙娜·薇依", quote: "关注是灵魂中最稀有、最纯粹的慷慨形式。", work: "《扎根》", desc: "近乎神圣的共情力。认为思想植根于对劳动的尊重。", tags: ["注视", "共情"], books: ["《扎根》"], dims: [60, 60, 95, 40, 50, 80], map: "神秘主义" },
-            butler: { name: "朱迪斯·巴特勒", quote: "身份不是固定的事实，而是一种被迫的重复表演。", work: "《性别麻烦》", desc: "规则解构者。在权力的缝隙中寻找反抗的可能。", tags: ["表演", "解构"], books: ["《性别麻烦》"], dims: [70, 60, 50, 95, 85, 60], map: "后现代" },
-            haraway: { name: "唐娜·哈拉维", quote: "我宁愿做一个赛博格，也不愿做一个女神。", work: "《赛博格宣言》", desc: "未来叙事者。打破自然与文化的边界，拥抱技术混杂。", tags: ["赛博格", "后人类"], books: ["《赛博格宣言》"], dims: [70, 65, 40, 95, 70, 60], map: "科学论" },
-            hooks: { name: "贝尔·胡克斯", quote: "爱是走向自由的一种行动。", work: "《关于爱的一切》", desc: "交织性先锋。正义必须包含爱，解放需打破枷锁。", tags: ["交叉性", "爱"], books: ["《关于爱的一切》"], dims: [60, 80, 90, 85, 60, 90], map: "黑人女性主义" },
-            davis: { name: "安吉拉·戴维斯", quote: "自由是一场无止境的奋斗。", work: "《女性，种族与阶级》", desc: "革命者。致力于废除压迫结构。认为解放不可脱离阶级分析。", tags: ["革命", "斗争"], books: ["《女性，种族与阶级》"], dims: [50, 98, 60, 85, 50, 95], map: "马女性主义" },
-            nussbaum: { name: "玛莎·努斯鲍姆", quote: "正义需要一种富有成效的情感。", work: "《能力的创造》", desc: "理智情感主义者。认为情感即认知，衡量福祉。", tags: ["能力", "脆弱"], books: ["《能力的创造》"], dims: [85, 75, 85, 40, 60, 90], map: "政治哲学" },
-            stein: { name: "艾德丝·施泰因", quote: "每一个进入灵魂的词，都是一种命运。", work: "《对共情的本质研究》", desc: "现象学朝圣者。在共情深处探寻本质，寻找理性和神性的融合。", tags: ["现象学", "共情"], books: ["《对共情的本质研究》"], dims: [90, 30, 90, 20, 70, 60], map: "现象学" },
-            luxemburg: { name: "罗莎·卢森堡", quote: "自由永远是那些思考方式不同的人的自由。", work: "《社会改良还是革命》", desc: "思想闪电。主张彻底的民主与自发的政治行动。", tags: ["民主", "自发"], books: ["《社会改良还是革命》"], dims: [80, 98, 50, 90, 40, 95], map: "马克思主义" },
-            mernissi: { name: "法蒂玛·梅尔尼西", quote: "如果我们不书写历史，别人就会替我们书写。", work: "《后宫背后的面纱》", desc: "跨文化破墙者。通过重读经典挑战父权与偏见。", tags: ["跨文化", "重写"], books: ["《后宫背后的面纱》"], dims: [80, 70, 60, 85, 75, 85], map: "跨文化" },
-            foot: { name: "菲利帕·福特", quote: "美德是人类繁荣的一种卓越表现。", work: "《美德与罪过》", desc: "美德伦理复兴者。回归人的性格与卓越中。", tags: ["美德", "逻辑"], books: ["《美德与罪过》"], dims: [90, 40, 70, 30, 80, 80], map: "伦理学" },
-            anscombe: { name: "伊丽莎白·安斯康姆", quote: "意图是通向行动本质的钥匙。", work: "《意图》", desc: "逻辑剖析者。挑战伦理学框架，智性的极致。", tags: ["解析", "意图"], books: ["《意图》"], dims: [98, 30, 40, 50, 85, 70], map: "行动论" }
+            hypatia: { name: "海帕提娅", quote: "保留你思考的权利。因为即使是错误的思考，也比不思考要好。", work: "《天文学评注》", desc: "你是理性的坚实拥簇。在混乱中仰望永恒的逻辑与秩序。", thought: "坚持数学与天文学是通往客观真理的最纯粹路径。她认为理性不仅仅是思考的工具，而是一场不向群体盲从妥协的生活方式。", resonance: "在虚假信息与情绪化叙事泛滥的今天，海帕提娅提醒我们回归严谨的逻辑闭环，在算法喧嚣中保持智性的冷峻。", tags: ["理智", "秩序"], books: ["《海帕提娅传》", "《希腊数学史》", "《亚历山大：最后的一束光》"], dims: [95, 20, 30, 10, 80, 70], map: "数学、天文学" },
+            wollstonecraft: { name: "玛丽·沃斯通克拉夫特", quote: "我不希望女性拥有支配男性的权力，而是拥有支配她们自身权力的权利。", work: "《为女权辩护》", desc: "启蒙之光。坚信理性没有性别，尊严源于独立。", thought: "核心在于通过教育实现理性的觉醒。她主张尊严并非天赋，而是通过履行义务和独立生活在契约社会中赢得的成果。", resonance: "当我们讨论职场平权或受教育权时，她告诉我们：只有精神上的绝对独立，才能换取人格上的终极自由。", tags: ["独立", "契约"], books: ["《为女权辩护》", "《法兰西大革命史论》", "《启蒙运动中的女性》"], dims: [70, 80, 50, 60, 80, 95], map: "公民权利" },
+            arendt: { name: "汉娜·阿伦特", quote: "平庸之恶源于拒绝思考，拒绝站在他人的立场去感知世界。", work: "《人的境况》", desc: "公共领域守护者。认为自由在共同担当中显现。", thought: "提出了“平庸之恶”的概念，认为恶并不总是有预谋的，更多来自于个体在官僚体制中丧失了“思考”与“评判”的能力。", resonance: "警示我们在职场和系统中，不要因为‘执行任务’而放弃道德良知，真正的自由是在公共广场上的每一次真实对话。", tags: ["行动", "反平庸"], books: ["《人的境况》", "《平庸之恶》", "《过去与未来之间》"], dims: [80, 95, 60, 70, 40, 90], map: "政治哲学" },
+            beauvoir: { name: "西蒙娜·德·波伏娃", quote: "女人不是生来就是女人的，而是变成女人的。", work: "《第二性》", desc: "存在主义灵魂。生命是一场永恒的“自我生成”。", thought: "拒绝任何先验的定义，认为女性被社会定义为“第二性”（他者）。主张主体性必须通过不断的超越和生成来实现。", resonance: "在人设崩塌、定义泛滥的现代，她提醒我们：你不是任何人的注脚，你的生命是一场未完成的动态生成。", tags: ["生成", "主体性"], books: ["《第二性》", "《暧昧道德伦理学》", "《名士风流》"], dims: [75, 75, 40, 90, 95, 75], map: "存在主义" },
+            weil: { name: "西蒙娜·薇依", quote: "关注是灵魂中最稀有、最纯粹的慷慨形式。", work: "《扎根》", desc: "近乎神圣的共情力。认为思想植根于对劳动的尊重。", thought: "追求极端的“去我化”，通过对他者苦难的深度“注视”来实现精神升华。她认为真正的思想应植根于卑微的劳动中。", resonance: "在精致利己主义盛行的今天，薇依那近乎自虐的注视感，让我们重新思考什么是对他人的深度慈悲。", tags: ["注视", "共情"], books: ["《扎根》", "《重负与神恩》", "《薇依全集》"], dims: [60, 60, 95, 40, 50, 80], map: "神秘主义" },
+            butler: { name: "朱迪斯·巴特勒", quote: "身份不是固定的事实，而是一种被迫的重复表演。", work: "《性别麻烦》", desc: "规则解构者。在权力的缝隙中寻找反抗的可能。", thought: "解构了性别和身份的本质主义。认为我们表现出来的性别感其实是社会剧本长期训练出来的“表演性”后果。", resonance: "当我们感到被社会标签绑架时，她告诉我们：既然是表演，我们就有权修改剧本。", tags: ["表演", "解构"], books: ["《性别麻烦》", "《消解性别》", "《感官、权力与主体》"], dims: [70, 60, 50, 95, 85, 60], map: "后现代" },
+            haraway: { name: "唐娜·哈拉维", quote: "我宁愿做一个赛博格，也不愿做一个女神。", work: "《赛博格宣言》", desc: "未来叙事者。打破自然与文化的边界，拥抱技术混杂。", thought: "提出了“赛博格”隐喻，打破了人类/机器、男性/女性的二元对立，倡导一种流动的、非本质主义的后人类身份。", resonance: "在AI深度介入生活的时代，她邀请我们拥抱这种“混杂感”，在技术与生物的融合中发现新的生命叙事。", tags: ["赛博格", "后人类"], books: ["《赛博格宣言》", "《类人猿、赛博格和女性》", "《相伴物种》"], dims: [70, 65, 40, 95, 70, 60], map: "科学论" },
+            hooks: { name: "贝尔·胡克斯", quote: "爱是走向自由的一种行动。", work: "《关于爱的一切》", desc: "交织性先锋。正义必须包含爱，解放需打破枷锁。", thought: "强调压迫的“交织性”，认为性别歧视不能脱离种族和阶级来讨论。她主张将“爱”视为一种激进的政治实践。", resonance: "她教会我们在追求正义的同时不放弃温暖。爱不是私人的软弱，而是拆解系统性暴力的终极武器。", tags: ["交叉性", "爱"], books: ["《关于爱的一切》", "《女权主义是每个人的》", "《渴望：种族、性别与文化》"], dims: [60, 80, 90, 85, 60, 90], map: "黑人女性主义" },
+            davis: { name: "安吉拉·戴维斯", quote: "自由是一场无止境的奋斗。", work: "《女性，种族与阶级》", desc: "革命者。致力于废除压迫结构。认为解放不可脱离阶级分析。", thought: "将女性解放与反资本主义、反种族主义紧密结合。她致力于废除压迫个体的监狱系统和结构性偏见。", resonance: "她的力量感源于对弱势群体的绝对担当。她提醒我们：真正的自由不是一个人的升迁，而是所有人的解放。", tags: ["革命", "斗争"], books: ["《女性，种族与阶级》", "《自由是不断的斗争》", "《监狱有用吗？》"], dims: [50, 98, 60, 85, 50, 95], map: "马女性主义" },
+            nussbaum: { name: "玛莎·努斯鲍姆", quote: "正义需要一种富有成效的情感。", work: "《能力的创造》", desc: "理智情感主义者。认为情感即认知，衡量福祉。", thought: "开发了“能力方法”，认为衡量正义的指标应是每个人实际上“能做什么”和“能成为什么”。她极度重视情感在正义中的作用。", resonance: "她让我们意识到：同情心不是多余的情感，而是理智决策的基石。一个正义的社会，必须容纳人的脆弱性。", tags: ["能力", "脆弱"], books: ["《能力的创造》", "《善的脆弱性》", "《正义的疆界》"], dims: [85, 75, 85, 40, 60, 90], map: "政治哲学" },
+            stein: { name: "艾德丝·施泰因", quote: "每一个进入灵魂的词，都是一种命运。", work: "《对共情的本质研究》", desc: "现象学朝圣者。在共情深处探寻本质，寻找理性和神性的融合。", thought: "研究共情的本质，认为通过共情，我们可以穿透自己的经验界限，真实地感知到另一个主体的存在与痛苦。", resonance: "在这个信息茧房严重的时代，施泰因的现象学教我们如何耐心地去“感知”对方，在灵魂深处建立连接。", tags: ["现象学", "共情"], books: ["《对共情的本质研究》", "《有限存在与永恒存在》", "《女性的本质》"], dims: [90, 30, 90, 20, 70, 60], map: "现象学" },
+            luxemburg: { name: "罗莎·卢森堡", quote: "自由永远是那些思考方式不同的人的自由。", work: "《社会改良还是革命》", desc: "思想闪电。主张彻底的民主与自发的政治行动。", thought: "强调群众的“自发性”和最彻底的民主。她不仅在理论上挑战权威，更是在用生命践行自下而上的社会变革。", resonance: "在权威崇拜和消极避世之间，她那份如闪电般的自发性活力，是对现代丧文化的终极救赎。", tags: ["民主", "自发"], books: ["《社会改良还是革命》", "《资本积累论》", "《罗莎·卢堡书信集》"], dims: [80, 98, 50, 90, 40, 95], map: "马克思主义" },
+            mernissi: { name: "法蒂玛·梅尔尼西", quote: "如果我们不书写历史，别人就会替我们书写。", work: "《后宫背后的面纱》", desc: "跨文化破墙者。通过重读经典挑战父权与偏见。", thought: "通过重读宗教和历史经典，拆解了针对女性的刻板偏见。她证明了文化并非铁板一块，而是可以被重新解读和改造的。", resonance: "她教会我们在面对不公的传统时，不要直接放弃，而是回到根源，用知识作为重新书写自我的权利。", tags: ["跨文化", "重写"], books: ["《后宫背后的面纱》", "《禁宫之梦》", "《被遗忘的伊斯兰女王》"], dims: [80, 70, 60, 85, 75, 85], map: "跨文化" },
+            foot: { name: "菲利帕·福特", quote: "美德是人类繁荣的一种卓越表现。", work: "《美德与罪过》", desc: "美德伦理复兴者。回归人的性格与卓越中。", thought: "复兴了亚里士多德的美德伦理. 认为道德不是抽象的义务，而是为了实现人类繁荣所必须具备的优秀品质。", resonance: "她让我们重新关注“性格”：在极端情况下，决定你行为的不是算法，而是你长期以来刻在骨子里的正直。", tags: ["美德", "逻辑"], books: ["《美德与罪过》", "《自然良善》", "《伦理、道德与本能》"], dims: [90, 40, 70, 30, 80, 80], map: "伦理学" },
+            anscombe: { name: "伊丽莎白·安斯康姆", quote: "意图是通向行动本质的钥匙。", work: "《意图》", desc: "逻辑剖析者。挑战伦理学框架，智性的极致。", thought: "通过对“意图”的深度语言分析，挑战了现代道德哲学的根基. 她认为不理解行动者的意图，就无法进行任何道德评价。", resonance: "她是理性的利刃，在‘论迹不论心’和‘论心不论迹’之间，她教我们如何诚实、严谨地解剖自己的每一次动机。", tags: ["解析", "意图"], books: ["《意图》", "《现代道德哲学》", "《从巴门尼德到维特根斯坦》"], dims: [98, 30, 40, 50, 85, 70], map: "行动论" }
         };
 
         const questions = [
-            { t: "当你身处社交媒体的信息洪流中，面对一个瞬间引爆全网、但真相未明的事件时，你的第一反应是：", o: [
-                { t: "分析事件背后的逻辑漏洞，寻找证据链的断裂点", p: ["hypatia", "anscombe"] },
-                { t: "关注事件中受苦者的处境，给予一份静谧的共情", p: ["weil", "stein"] },
-                { t: "反思这背后的流量霸权由谁操纵，谁被隐身了", p: ["butler", "haraway"] },
-                { t: "在公共评论区发起对话，试图通过讨论寻求真相", p: ["arendt", "luxemburg"] }
+            { t: "当你身处社交媒体的信息洪流中，面对一个瞬间引爆全网、但真相未明的事件时，你的第一反应通常是：", o: [
+                { t: "分析事件背后的逻辑漏洞，寻找证据链的断裂点", p: ["hypatia", "anscombe"], insight: "你骨子里相信冷静的逻辑才是保护真相的最后防线。你讨厌被煽动，理智是你唯一的定海神针。", names: "海帕提娅 / 安斯康姆" },
+                { t: "关注事件中受苦者的处境，给予一份静谧的共情", p: ["weil", "stein"], insight: "你总能隔着屏幕感受到具体的疼。在你看来，真相如果缺失了悲悯，那就只是冰冷的技术数据。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "反思这背后的流量霸权由谁操纵，谁被隐身了", p: ["butler", "haraway"], insight: "你看穿了叙事的表演感。你更在乎是谁在握着笔杆子，以及他们想通过这场戏达到什么目的。", names: "巴特勒 / 哈拉维" },
+                { t: "在公共评论区发起对话，试图通过讨论寻求真相", p: ["arendt", "luxemburg"], insight: "你拒绝做旁观者。你相信自由是在共同担当中显现的，对话本身就是寻求真理的行动。", names: "阿伦特 / 卢森堡" }
             ]},
             { t: "在一个追求极致‘效率’和‘有用性’的社会里，你如何定义自己度过的‘无意义’时光（如发呆、散步）？", o: [
-                { t: "这是一场脱离社会剧本、重塑自我主体性的生存实验", p: ["beauvoir", "butler"] },
-                { t: "这是一种消除自我的注视，让灵魂在沉静中重新扎根", p: ["weil", "stein"] },
-                { t: "这是每个公民应享有的、不被系统剥削的绝对生命权", p: ["wollstonecraft", "nussbaum"] },
-                { t: "这是一次微小的政治反抗，拒绝沦为纯粹的劳动机器", p: ["davis", "luxemburg"] }
+                { t: "这是一场脱离社会剧本、重塑自我主体性的生存实验", p: ["beauvoir", "butler"], insight: "你拒绝被社会功能定义。这些停顿是你对自己生命主权的郑重宣告：我不仅仅是‘有用’的。", names: "波伏娃 / 巴特勒" },
+                { t: "这是一种消除自我的注视，让灵魂在沉静中重新扎根", p: ["weil", "stein"], insight: "你在静止中找到了深度。那是一场对自己灵魂的深度洗礼，在无声中与万物共振。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "这是每个公民应享有的、不被系统剥削的绝对生命权", p: ["wollstonecraft", "nussbaum"], insight: "你对尊严有极强的契约感。你认为休息不是施舍，而是理应不容侵犯的正义权利。", names: "沃斯通克拉夫特 / 努斯鲍姆" },
+                { t: "这是一次微小的政治反抗，拒绝沦为纯粹的劳动机器", p: ["davis", "luxemburg"], insight: "你的每一次停顿，都是对这个快节奏剥削世界的温柔挑衅。你拒绝成为零件。", names: "戴维斯 / 卢森堡" }
             ]},
             { t: "看到算法生成的‘虚拟偶像’，你会想：", o: [
-                { t: "这是人类与技术混杂的、后人类的胜利", p: ["haraway", "butler"] },
-                { t: "它缺乏真实存在的厚度，无法与人对话", p: ["arendt", "beauvoir"] },
-                { t: "它是流水线产物，是理性极致僵化的表现", p: ["hypatia", "anscombe"] },
-                { t: "它掩盖了底层劳工或数据的真实剥削", p: ["davis", "hooks"] }
+                { t: "这是人类与技术混杂的、后人类的胜利", p: ["haraway", "butler"], insight: "你乐于拥抱这种混杂感。你认为生命不该被天然界限框死，流动的身份反而更具生命力。", names: "哈拉维 / 巴特勒" },
+                { t: "它缺乏真实存在的厚度，无法与人对话", p: ["arendt", "beauvoir"], insight: "你珍视那份不可替代的人性温度。在你眼中，没有生命史的符号只是虚浮的投影。", names: "阿伦特 / 波伏娃" },
+                { t: "它是流水线产物，是理性极致僵化的表现", p: ["hypatia", "anscombe"], insight: "你对真实有种智性上的洁癖。你讨厌这种经过计算的虚伪，它侮辱了逻辑的严谨。", names: "海帕提娅 / 安斯康姆" },
+                { t: "它掩盖了底层劳工或数据的真实剥削", p: ["davis", "hooks"], insight: "你习惯于剥开华丽的画皮。你看到的是光鲜背后的交织压迫，是那些被掩盖的真实伤口。", names: "戴维斯 / 贝尔·胡克斯" }
             ]},
             { t: "在深夜的孤独中，最能让你感到安宁的是：", o: [
-                { t: "在书籍与思维中构建宇宙秩序", p: ["hypatia", "foot"] },
-                { t: "对万物痛苦的静谧关注", p: ["weil", "stein"] },
-                { t: "策划下一次自我超越或改变的行动", p: ["beauvoir", "luxemburg"] },
-                { t: "想起与志同道合者讨论时的共鸣", p: ["arendt", "hooks"] }
+                { t: "在书籍与思维中构建宇宙秩序", p: ["hypatia", "foot"], insight: "只要大脑里的逻辑还在运转，世界就还没乱。你在知识的永恒性中，找到了对抗寂寞的盔甲。", names: "海帕提娅 / 福特" },
+                { t: "对万物痛苦的静谧关注", p: ["weil", "stein"], insight: "你的孤独不是空洞，而是满溢。你在静夜里承载着他者的分量，这种担当感反而让你充盈。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "策划下一次自我超越或改变的行动", p: ["beauvoir", "luxemburg"], insight: "孤独是你的蓄能期。你在黎明前的黑暗里磨刀，总想在下一个太阳升起时，让世界变得更像样。", names: "波伏娃 / 卢森堡" },
+                { t: "想起与志同道合者讨论时的共鸣", p: ["arendt", "hooks"], insight: "对话是你确认存在的火种。即便是一个人，你也在内心延续着那些关于正义与爱的交谈。", names: "阿伦特 / 贝尔·胡克斯" }
             ]},
             { t: "必须在一段感情中做出某种‘牺牲’，你会：", o: [
-                { t: "审视这种牺牲是否基于刻板印象的表演", p: ["butler", "mernissi"] },
-                { t: "认为牺牲必须服务于双方主体性的提升", p: ["beauvoir", "wollstonecraft"] },
-                { t: "这是一种消除自我的注视，具有神圣意义", p: ["weil", "stein"] },
-                { t: "绝不牺牲自由，独立是个体尊严的基石", p: ["hypatia", "anscombe"] }
+                { t: "审视这种牺牲是否基于刻板印象的表演", p: ["butler", "mernissi"], insight: "你对隐形的权力极度警觉。你拒绝扮演那个被写好的“牺牲者”剧本，你要的是清醒的选择。", names: "巴特勒 / 梅尔尼西" },
+                { t: "认为牺牲必须服务于双方主体性的提升", p: ["beauvoir", "wollstonecraft"], insight: "你追求的是两个独立灵魂的合谋。牺牲如果不能让彼此更完整，那就是毫无意义的损耗。", names: "波伏娃 / 沃斯通克拉夫特" },
+                { t: "这是一种消除自我的注视，具有神圣意义", p: ["weil", "stein"], insight: "牺牲对你而言不是索取，而是消解。你通过这种给予，去触碰那份超越自我的博大。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "绝不牺牲自由，独立是个体尊严的基石", p: ["hypatia", "anscombe"], insight: "你的边界感极强。理性告诉你，没有了独立的人格，任何所谓的“牺牲”都只是精神的自我放逐。", names: "海帕提娅 / 安斯康姆" }
             ]},
             { t: "面对层出不穷的网络热点，你的习惯是：", o: [
-                { t: "保持智性诚实，不被集体情绪裹挟", p: ["arendt", "hypatia"] },
-                { t: "关注其中弱势群体是否受到了叠加压迫", p: ["hooks", "davis"] },
-                { t: "解构热点背后的标签，看谁在操纵定义", p: ["butler", "haraway"] },
-                { t: "在混乱中寻找永恒的美德与意图", p: ["foot", "anscombe"] }
+                { t: "保持智性诚实，不被集体情绪裹挟", p: ["arendt", "hypatia"], insight: "你是那一块拒绝染色的石头。无论浪潮多汹涌，你始终坚持用自己的眼光去评判事实。", names: "阿伦特 / 海帕提娅" },
+                { t: "关注其中弱势群体是否受到了叠加压迫", p: ["hooks", "davis"], insight: "你本能地站在边缘处看世界。你总能发现主流叙事背后的裂痕，以及那些被掩盖的具体的痛。", names: "贝尔·胡克斯 / 戴维斯" },
+                { t: "解构热点背后的标签，看谁在操纵定义", p: ["butler", "haraway"], insight: "你是个文字背后的侦探。你喜欢拆开那些被打包好的名词，看看里面到底藏着什么样的权力交易。", names: "巴特勒 / 哈拉维" },
+                { t: "在混乱中寻找永恒的美德与意图", p: ["foot", "anscombe"], insight: "你相信变动中的恒常。你在纷扰中寻找那份经得起推敲的善，或者是那份真实的动机。", names: "福特 / 安斯康姆" }
             ]},
             { t: "你如何看待‘教育’这件事？", o: [
-                { t: "它是赋予每个人平等竞争权利的契约", p: ["wollstonecraft", "nussbaum"] },
-                { t: "它是打破阶级固化与资本压迫的武器", p: ["davis", "luxemburg"] },
-                { t: "它是为了开启民智，实现理性的飞跃", p: ["hypatia", "foot"] },
-                { t: "它是学会自由‘生成’自我的实验室", p: ["beauvoir", "butler"] }
+                { t: "它是赋予每个人平等竞争权利的契约", p: ["wollstonecraft", "nussbaum"], insight: "你视教育为最根本的正义。那是每个人拿回自己尊严的唯一战场，也是社会公平的底座。", names: "沃斯通克拉夫特 / 努斯鲍姆" },
+                { t: "它是打破阶级固化与资本压迫的武器", p: ["davis", "luxemburg"], insight: "在你眼里，教育如果不能激发出改变世界的愤怒，那它只是顺从者的培训班。你要的是觉醒。", names: "戴维斯 / 卢森堡" },
+                { t: "它是为了开启民智，实现理性的飞跃", p: ["hypatia", "foot"], insight: "你追求的是灵魂的卓越。教育不是为了生存，而是为了磨砺那把理性的快刀，去劈开黑暗。", names: "海帕提娅 / 福特" },
+                { t: "它是学会自由‘生成’自我的实验室", p: ["beauvoir", "butler"], insight: "你觉得教育是场自我的炼金术。它的目的不是让你成为谁，而是学会如何不断地打破旧我。", names: "波伏娃 / 巴特勒" }
             ]},
             { t: "当你在路边看到无家可归者，瞬间念头是：", o: [
-                { t: "停下脚步，给予毫无占有欲的深度注视", p: ["weil", "stein"] },
-                { t: "反思整个社会分配体系的正义性缺失", p: ["nussbaum", "davis"] },
-                { t: "不仅是捐赠，更应发起改变该阶级的行动", p: ["luxemburg", "hooks"] },
-                { t: "分析其作为‘人’在社会坐标中的尊严受损", p: ["arendt", "wollstonecraft"] }
+                { t: "停下脚步，给予毫无占有欲的深度注视", p: ["weil", "stein"], insight: "你那一瞬间的悲悯非常沉重。那种“我就在这里看着你”的注视，是你对人类尊严最高的修补。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "反思整个社会分配体系的正义性缺失", p: ["nussbaum", "davis"], insight: "你的痛感直接指向了系统的裂缝。你看到的是分配的无能，是对人类基本能力的残暴剥夺。", names: "努斯鲍姆 / 戴维斯" },
+                { t: "不仅是捐赠，更应发起改变该阶级的行动", p: ["luxemburg", "hooks"], insight: "你拒绝廉价的施舍。你想要的是真实的变局，是那种能让一整个群体站直了活着的结构性变迁。", names: "卢森堡 / 贝尔·胡克斯" },
+                { t: "分析其作为‘人’在社会坐标中的尊严受损", p: ["arendt", "wollstonecraft"], insight: "你从公民权利的角度审视这一切。在你看来，这不仅是贫穷，更是一个人被公共空间放逐的悲剧。", names: "阿伦特 / 沃斯通克拉夫特" }
             ]},
             { t: "关于‘传统习俗’，你的本能立场是：", o: [
-                { t: "这是父权制与资本逻辑在现代的延续", p: ["hooks", "mernissi"] },
-                { t: "解构陈腐仪式的合法性，追求流动性", p: ["butler", "haraway"] },
-                { t: "如果有害于主体自由，就必须被推翻", p: ["beauvoir", "wollstonecraft"] },
-                { t: "理性分析其意图，看是否符合繁荣", p: ["anscombe", "foot"] }
+                { t: "这是父权制与资本逻辑在现代的延续", p: ["hooks", "mernissi"], insight: "你看穿了习俗那层温情的外衣。你时刻警惕着那些代代相传的规矩，是如何在潜移默化中完成统治的。", names: "贝尔·胡克斯 / 梅尔尼西" },
+                { t: "解构陈腐仪式的合法性，追求流动性", p: ["butler", "haraway"], insight: "你讨厌一切固化的仪式。你觉得生命应该是流动的实验，任何以“古老”为名的束缚，都应被拆解。", names: "巴特勒 / 哈拉维" },
+                { t: "如果有害于主体自由，就必须被推翻", p: ["beauvoir", "wollstonecraft"], insight: "你对自由有一种原教旨主义式的捍卫。习俗如果让人变得猥琐，那它就必须给自由让路。", names: "波伏娃 / 沃斯通克拉夫特" },
+                { t: "理性分析其意图，看是否符合繁荣", p: ["anscombe", "foot"], insight: "你是一个理智的审判官。你会用事实和意图去衡量，看它是否真的有益于长久的、人类的繁荣。", names: "安斯康姆 / 福特" }
             ]},
             { t: "如果 AI 能够代替你完成所有工作，你会：", o: [
-                { t: "欢呼解放，终于可以全身心追求理性之光", p: ["hypatia", "foot"] },
-                { t: "警惕技术对公共空间的侵蚀与思考停滞", p: ["arendt", "beauvoir"] },
-                { t: "拥抱赛博格未来，探索新的存在形式", p: ["haraway", "butler"] },
-                { t: "关注失去劳作权的民众是否被彻底抛弃", p: ["weil", "davis"] }
+                { t: "欢呼解放，终于可以全身心追求理性之光", p: ["hypatia", "foot"], insight: "你觉得肉身的劳作是种拖累。如果能被解放，你终于可以去星辰大海和逻辑深处远征了。", names: "海帕提娅 / 福特" },
+                { t: "警惕技术对公共空间的侵蚀与思考停滞", p: ["arendt", "beauvoir"], insight: "你担心便利会换走人的“行动力”。如果一切都被代劳，人还如何确认自己的真实存在？", names: "阿伦特 / 波伏娃" },
+                { t: "拥抱赛博格未来，探索新的存在形式", p: ["haraway", "butler"], insight: "你对新边界充满好奇。你迫不及待想参与这场人类演化的下半场，在技术融合中玩出新花样。", names: "哈拉维 / 巴特勒" },
+                { t: "关注失去劳作权的民众是否被彻底抛弃", p: ["weil", "davis"], insight: "你在欢呼声中听到了哭声。你担心在效率盛宴之后，那些被剥夺了“有用性”的人，会丧失立足之地。", names: "西蒙娜·薇依 / 戴维斯" }
             ]},
             { t: "面对性格迥异的人，你理解ta的方式是：", o: [
-                { t: "通过共情深入对方现象界，感知命运", p: ["stein", "weil"] },
-                { t: "分析其行为背后的社会阶级与族裔背景", p: ["hooks", "davis"] },
-                { t: "意识到每个人都是一场正在生成的表演", p: ["butler", "beauvoir"] },
-                { t: "用逻辑推导其动机，寻找知性共鸣点", p: ["hypatia", "anscombe"] }
+                { t: "通过共情深入对方现象界，感知命运", p: ["stein", "weil"], insight: "你拥有一种近乎通灵的耐心。你愿意暂时放下自我，去感知 ta 那些未曾说出口的微弱颤动。", names: "施泰因 / 西蒙娜·薇依" },
+                { t: "分析其行为背后的社会阶级与族裔背景", p: ["hooks", "davis"], insight: "你看得非常通透。你明白没有谁活在真空里，所谓的“个性”，往往是社会多重权力下的回响。", names: "贝尔·胡克斯 / 戴维斯" },
+                { t: "意识到每个人都是一场正在生成的表演", p: ["butler", "beauvoir"], insight: "你看淡了表象的差异。在你眼里，大家都在排演这场名叫“生活”的戏，这种认知让你豁达。", names: "巴特勒 / 波伏娃" },
+                { t: "用逻辑推导其动机，寻找知性共鸣点", p: ["hypatia", "anscombe"], insight: "你通过推演对方的意图来建立联结。对你来说，理性的同步才是最高级的、真正的心有灵犀。", names: "海帕提娅 / 安斯康姆" }
             ]},
             { t: "你认为‘自由’最真实的体验在于：", o: [
-                { t: "在与他人共同改变世界的行动瞬间", p: ["arendt", "luxemburg"] },
-                { t: "彻底摆脱各种社会身份与标签的时刻", p: ["butler", "haraway"] },
-                { t: "通过思考触及宇宙不变真理的那个点", p: ["hypatia", "foot"] },
-                { t: "完全不被外界定义，持续自我生成的动态", p: ["beauvoir", "wollstonecraft"] }
+                { t: "在与他人共同改变世界的行动瞬间", p: ["arendt", "luxemburg"], insight: "你觉得一个人的自由太薄了。只有在人群中，在那个“我们做成了什么”的瞬间，自由才有了分量。", names: "阿伦特 / 卢森堡" },
+                { t: "彻底摆脱各种社会身份与标签的时刻", p: ["butler", "haraway"], insight: "自由对你来说是一场盛大的逃逸。逃离名字、逃离身份，去体验那份毫无修饰的原始生命张力。", names: "巴特勒 / 哈拉维" },
+                { t: "通过思考触及宇宙不变真理的那个点", p: ["hypatia", "foot"], insight: "自由就是绝对的清晰。当你洞察了事物的底层逻辑，你就从无知中解脱了。真理才是豁免权。", names: "海帕提娅 / 福特" },
+                { t: "完全不被外界定义，持续自我生成的动态", p: ["beauvoir", "wollstonecraft"], insight: "自由是你永不停止的自我雕琢。你拒绝被定格在任何一个时刻，你的下一秒永远在推翻上一秒。", names: "波伏娃 / 沃斯通克拉夫特" }
             ]},
             { t: "遭受不公委屈时，最有效的自我疗愈是：", o: [
-                { t: "将痛苦转化为分析权力结构的智性力量", p: ["butler", "hooks"] },
-                { t: "提醒自己遭遇只是生成自我的磨刀石", p: ["beauvoir", "anscombe"] },
-                { t: "进入寂静，在更高维度的秩序中释怀", p: ["weil", "stein"] },
-                { t: "与同道者交流，将遭遇转化为公共议题", p: ["arendt", "davis"] }
+                { t: "将痛苦转化为分析权力结构的智性力量", p: ["butler", "hooks"], insight: "你的痛长出了牙齿。通过解剖对方的权力来源，你从“受害者”变成了“观察者”，夺回了主导权。", names: "巴特勒 / 贝尔·胡克斯" },
+                { t: "提醒自己遭遇只是生成自我的磨刀石", p: ["beauvoir", "anscombe"], insight: "你把委屈当成营养。你相信所有的磨损都是在雕刻更坚韧的自己，这种认知让你百毒不侵。", names: "波伏娃 / 安斯康姆" },
+                { t: "进入寂静，在更高维度的秩序中释怀", p: ["weil", "stein"], insight: "你有一种惊人的超脱感。你在静默中看到了世界宏大的裂痕，这让个人的小小委屈显得微不足道。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "与同道者交流，将遭遇转化为公共议题", p: ["arendt", "davis"], insight: "你拒绝独自吞咽。你要把私人的痛，变成照亮社会盲区的火种。通过这种转化，你让委屈获得了庄严感。", names: "阿伦特 / 戴维斯" }
             ]},
             { t: "如果你有一笔巨款，最想投入的领域是：", o: [
-                { t: "建立一个跨越偏见的教育平权体系", p: ["wollstonecraft", "nussbaum"] },
-                { t: "资助激进研究，打破身份与技术壁垒", p: ["haraway", "butler"] },
-                { t: "直接改善底层劳工的扎根环境与尊严", p: ["weil", "luxemburg"] },
-                { t: "扩建公共广场与图书馆，复兴对话", p: ["arendt", "hypatia"] }
+                { t: "建立一个跨越偏见的基础教育平权体系", p: ["wollstonecraft", "nussbaum"], insight: "你相信制度性的改变才是真的。你选了最慢但也最根本的路，因为深知尊严始于教育。", names: "沃斯通克拉夫特 / 努斯鲍姆" },
+                { t: "资助激进研究，打破身份与技术壁垒", p: ["haraway", "butler"], insight: "你是个思想的先行者。你乐于挑战“常识”，想通过跨界实验探索生存边界外的可能性。", names: "哈拉维 / 巴特勒" },
+                { t: "直接改善底层劳工的扎根环境与生存尊严", p: ["weil", "luxemburg"], insight: "你选了最具体的善良。你觉得最高级的善是让那些在工厂、在土地里劳作的人，能活得像个人。", names: "西蒙娜·薇依 / 卢森堡" },
+                { t: "扩建公共广场与图书馆，复兴对话的艺术", p: ["arendt", "hypatia"], insight: "你追求精神文明的复兴。你觉得如果大家都能学会在广场上理智交流，很多悲剧就不会发生了。", names: "阿伦特 / 海帕提娅" }
             ]},
             { t: "你对‘成功’的最终定义是：", o: [
-                { t: "保持极高的智性严谨与诚实", p: ["anscombe", "hypatia"] },
-                { t: "从未向体制妥协，参与了伟大变革", p: ["luxemburg", "davis"] },
-                { t: "通过思想修补了世界的某种裂痕", p: ["weil", "hooks"] },
-                { t: "始终是自己的主宰，完成自我超越", p: ["beauvoir", "wollstonecraft"] }
+                { t: "保持极高的智性严谨与诚实", p: ["anscombe", "hypatia"], insight: "你觉得一辈子如果没有欺骗过自己的逻辑，没有向无知投降，那就是最大的成功。智性高于一切。", names: "安斯康姆 / 海帕提娅" },
+                { t: "从未向体制妥协，参与了伟大的变革行动", p: ["luxemburg", "davis"], insight: "你对成功的定义刻在反抗的痕迹里。你不屑于平庸，参与了世界那点滴的向好偏转，才是证明。", names: "卢森堡 / 戴维斯" },
+                { t: "通过思想修补了世界的某种裂痕", p: ["weil", "hooks"], insight: "你相信哪怕修补了一点点具体的痛苦，这份生命就没有白费。这是一种带着温度的成功感。", names: "西蒙娜·薇依 / 贝尔·胡克斯" },
+                { t: "始终是自己的主宰，完成了一场自我超越", p: ["beauvoir", "wollstonecraft"], insight: "你觉得最大的成功就是赢过了昨天的自己。始终是生命的第一负责人，这种掌控感极其伟大。", names: "波伏娃 / 沃斯通克拉夫特" }
             ]},
-            { t: "面对社交媒体‘人设’，你的态度是：", o: [
-                { t: "看穿表演本质，意识到身份虚幻性", p: ["butler", "mernissi"] },
-                { t: "觉得这是一种逃避真实存在的软弱表现", p: ["beauvoir", "arendt"] },
-                { t: "分析算法人设对个体能力发展的限制", p: ["nussbaum", "haraway"] },
-                { t: "认为这些标签掩盖了真实的阶级处境", p: ["hooks", "davis"] }
+            { t: "面对社交媒体上的‘人设’，你的态度是：", o: [
+                { t: "看穿其表演本质，意识到身份的虚幻性", p: ["butler", "mernissi"], insight: "你深知生活就是一场大戏。你习惯在台下冷眼观赏，这种觉知让你极度通透，不被表象绑架。", names: "巴特勒 / 梅尔尼西" },
+                { t: "觉得这是一种逃避真实存在的软弱表现", p: ["beauvoir", "arendt"], insight: "你追求敢于露出瑕疵的真实。你觉得那种精致的扁平化，是对生命厚度的一种自我阉割。", names: "波伏娃 / 阿伦特" },
+                { t: "分析这种算法人设对个体能力发展的限制", p: ["nussbaum", "haraway"], insight: "你关心标签背后的“笼子效应”。你担心算法的归类会让人丧失原本可以变得更开阔的可能性。", names: "努斯鲍姆 / 哈拉维" },
+                { t: "认为这些标签掩盖了真实的阶级与处境", p: ["hooks", "davis"], insight: "你提醒自己别被滤镜迷了眼。你总能读出照片背后的资源不公，这源于你骨子里的硬核诚实。", names: "贝尔·胡克斯 / 戴维斯" }
             ]},
             { t: "如果你能拥有一个‘特异功能’，你希望是：", o: [
-                { t: "瞬间理解宇宙所有底层逻辑的能力", p: ["hypatia", "anscombe"] },
-                { t: "能够瞬间感知全球所有受苦者处境的能力", p: ["weil", "stein"] },
-                { t: "瞬间消除所有人心中刻板偏见的能力", p: ["wollstonecraft", "hooks"] },
-                { t: "能够瞬间集结千万人发起正义革命的能力", p: ["luxemburg", "davis"] }
+                { t: "瞬间理解宇宙所有逻辑底层逻辑的能力", p: ["hypatia", "anscombe"], insight: "你渴望一种上帝视角的清晰。这种全知的力量，能带给你在这混沌世界中从未有过的安全感。", names: "海帕提娅 / 安斯康姆" },
+                { t: "能够瞬间感知全球所有受苦者处境的能力", p: ["weil", "stein"], insight: "这功能会让你支离破碎，但你依然愿意选择这份极致的担当。你的灵魂底色是为了承载而生的。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "瞬间消除所有人心中刻板偏见的能力", p: ["wollstonecraft", "hooks"], insight: "你是纯粹的理想主义者。你想从源头上清理掉仇恨的杂草，让每个人都能被平等的目光注视。", names: "沃斯通克拉夫特 / 贝尔·胡克斯" },
+                { t: "能够瞬间集结千万人发起正义革命的能力", p: ["luxemburg", "davis"], insight: "你相信集体的力量。那种千万人同频共振带来的推枯拉朽的变革，是你潜意识里的英雄叙事。", names: "卢森堡 / 戴维斯" }
             ]},
-            { t: "评价一个人的道德时，你最看重：", o: [
-                { t: "ta在极端情况下表现出的卓越美德", p: ["foot", "stein"] },
-                { t: "ta的行为是否具有清晰且诚实的意图", p: ["anscombe", "hypatia"] },
-                { t: "ta是否敢于挑战压迫性的权力结构", p: ["davis", "butler"] },
-                { t: "ta在日常生活中对他人的关怀深度", p: ["hooks", "weil"] }
+            { t: "当你评价一个人的道德时，你最看重：", o: [
+                { t: "ta在极端情况下表现出的卓越美德", p: ["foot", "stein"], insight: "你相信道德是性格的积淀。你更看重一个人骨子里的坚韧，那是任何算法下都不变的东西。", names: "福特 / 施泰因" },
+                { t: "ta的行为是否具有清晰且诚实的意图", p: ["anscombe", "hypatia"], insight: "你极度看重动机的透明。你讨厌任何披着善意外皮的糊涂账，逻辑的诚实是道德的第一步。", names: "安斯康姆 / 海帕提娅" },
+                { t: "ta是否敢于挑战压迫性的权力结构", p: ["davis", "butler"], insight: "你认为真正的道德必须具备锋。如果不去反抗导致痛苦的根源，那所谓的善良就太苍白了。", names: "戴维斯 / 巴特勒" },
+                { t: "ta在日常生活中对他人的关怀与联结深度", p: ["hooks", "weil"], insight: "你觉得宏大叙事太假，最打动你的是日复一日的温柔。这种细碎的爱，才是修补世界的终极力量。", names: "贝尔·胡克斯 / 西蒙娜·薇依" }
             ]},
             { t: "关于‘金钱与物质’，你的哲学立场是：", o: [
-                { t: "它是人格保障，但不应凌驾于理性之上", p: ["wollstonecraft", "foot"] },
-                { t: "它是统治工具，必须被彻底重新分配", p: ["luxemburg", "davis"] },
-                { t: "它往往成为‘注视’的遮蔽，追求极简", p: ["weil", "stein"] },
-                { t: "它是主体生成的资源，而非存在的目的", p: ["beauvoir", "nussbaum"] }
+                { t: "它是独立人格的保障，但不应凌驾于理性之上", p: ["wollstonecraft", "foot"], insight: "你对金钱有一种清醒的实用主义。它是保护主权的工具，但也仅仅是工具，绝不能成为主人。", names: "沃斯通克拉夫特 / 福特" },
+                { t: "它是统治阶级的工具，必须被重新分配", p: ["luxemburg", "davis"], insight: "你从不把财富看作个人的恩赐。你看透了它是权力的固化形态，正义的终点应该是打破垄断。", names: "卢森堡 / 戴维斯" },
+                { t: "它往往成为‘注视’万物的遮蔽，应追求极简", p: ["weil", "stein"], insight: "你觉得过多的物质会压垮灵魂。极简对你来说不是潮流，而是为了看清本质所必须的剥离。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "它是主体生成的资源，而非存在的目的", p: ["beauvoir", "nussbaum"], insight: "你觉得金钱存在的意义应该是拓宽生命的边界。它服务于你那个不断“生成”中的自我。", names: "波伏娃 / 努斯鲍姆" }
             ]},
             { t: "你希望墓志铭上写着什么？", o: [
-                { t: "“在这里，有一颗永不向偏见屈服的灵魂。”", p: ["wollstonecraft", "hypatia"] },
-                { t: "“ta在这里通过行动，让世界稍微改变。”", p: ["arendt", "luxemburg"] },
-                { t: "“ta始终注视着那些被世界遗忘的角落。”", p: ["weil", "hooks"] },
-                { t: "“ta不仅是一个人，是一场流动的奇迹。”", p: ["beauvoir", "haraway"] }
+                { t: "“在这里，有一颗永不向偏见屈服的灵魂。”", p: ["wollstonecraft", "hypatia"], insight: "你一生都在与成见开战。这份宁折不弯的倔强，是你留给这个世界最珍贵的智性遗产。", names: "沃斯通克拉夫特 / 海帕提娅" },
+                { t: "“ta在这里通过行动，让世界稍微改变了一点。”", p: ["arendt", "luxemburg"], insight: "你拒绝做空谈家。你希望用真实的足迹去证明自己活过，公共回响才是你的生命归宿。", names: "阿伦特 / 卢森堡" },
+                { t: "“ta始终注视着那些被世界遗忘的角落。”", p: ["weil", "hooks"], insight: "你希望被记住的，是那份未曾移开过的、属于共情的目光。那是你对世界最大的温柔。", names: "西蒙娜·薇依 / 贝尔·胡克斯" },
+                { t: "“ta不仅是一个人，是一场流动的生命奇迹。”", p: ["beauvoir", "haraway"], insight: "你拒绝被盖棺定论。你希望哪怕死亡，也保持着那份生成的、无法定义的动态能量。", names: "波伏娃 / 哈拉维" }
+            ]},
+            { t: "当你在公共空间看到一个极具争议的‘新词’或‘标签’时，你的本能反应是：", o: [
+                { t: "分析词语定义的演变过程与背后的权力博弈", p: ["butler", "haraway"], insight: "你看穿了语言的刀锋。你拒绝被任何话术驯化，因为深知谁掌握了命名权，谁就掌握了统治权。", names: "巴特勒 / 哈拉维" },
+                { t: "思考该词语是否真实、精准地反映了生存本质", p: ["stein", "foot"], insight: "你对真实有种近乎强迫的追求。如果一个词语是在粉饰或撒谎，你会第一时间嗅到那种虚浮感。", names: "施泰因 / 福特" },
+                { t: "担心这种粗暴的标签会简化复杂的个人命运", p: ["arendt", "hooks"], insight: "你选了最人性的一面。你珍视每个具体的人，拒绝把活生生的人简化成干瘪标签的道德直觉。", names: "阿伦特 / 贝尔·胡克斯" },
+                { t: "运用逻辑拆解其语法意图，审视其是否严谨", p: ["anscombe", "hypatia"], insight: "你像个智性裁缝，用理性的针线挑破言不由衷的泡沫。这种严谨，是你在这个时代最硬核的诚实。", names: "安斯康姆 / 海帕提娅" }
+            ]},
+            { t: "在一次漫长的等待中，你感到时间正在被‘空耗’，你会：", o: [
+                { t: "把它变成一场与自我意识、与万物的静默对谈", p: ["weil", "stein"], insight: "你擅长在荒芜中开花。等待对你来说不是空耗，而是一场无需开口的扎根，灵魂在此时重获养分。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "在脑海中策划下一次具有真实公共影响的行动", p: ["arendt", "luxemburg"], insight: "你讨厌真空。身体被困住时，大脑已经冲向了下次变革。你的一生都在试图把碎片化时间转化为力量。", names: "阿伦特 / 卢森堡" },
+                { t: "利用这段真空期，对某逻辑悖论进行深度推演", p: ["hypatia", "foot"], insight: "你不需要外部娱乐。你大脑里的逻辑宫殿就是最好的游乐场，这种智性自洽感让你无惧冗长。", names: "海帕提娅 / 福特" },
+                { t: "接纳这种‘生成’中的空无，视其为生命的原貌", p: ["beauvoir", "haraway"], insight: "你有一种成熟的接纳感。你明白流逝本身就是一种“生成”。这种坦然，让你获得了诗意的自由。", names: "波伏娃 / 哈拉维" }
+            ]},
+            { t: "在数字监控无处不在的今天，你最看重的一种‘权利’是：", o: [
+                { t: "隐秘生存的权利：在系统之外保留不被数字化的边角", p: ["weil", "stein"], insight: "你拒绝被彻底看穿。你相信生命中那些最动人的褶皱应该留给自己，那种“不被察觉”是最后的净土。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "政治判断的权利：拒绝被算法投喂的信息蚕茧所俘虏", p: ["arendt", "nussbaum"], insight: "你对智性的自主有着极强的领地意识。你拒绝做信息的囚徒，选了那条最清醒的评判之路。", names: "阿伦特 / 努斯鲍姆" },
+                { t: "重构定义的权利：拒绝被大数据标签简单粗暴地归类", p: ["butler", "haraway"], insight: "你是流动的，而算法是死的。你享受这种逃离定义的状态，是对主体性的最终保护。", names: "巴特勒 / 哈拉维" },
+                { t: "逻辑诚实的权利：在数据霸权下依然坚持追求客观事实", p: ["hypatia", "anscombe"], insight: "你相信哪怕数据撒谎，逻辑链条依然通向真实。坚持事实，是你对虚无时代最决绝的反抗。", names: "海帕提娅 / 安斯康姆" }
+            ]},
+            { t: "当你面对一份极其丰厚、但需要放弃部分精神自主权的工作合同时，你会：", o: [
+                { t: "拒绝：独立的人格是行使理性的唯一前提", p: ["wollstonecraft", "hypatia"], insight: "在你眼里，独立是没有标价的。你选了最纯粹的傲骨，因为深知精神一旦租赁，理性便成了帮凶。", names: "沃斯通克拉夫特 / 海帕提娅" },
+                { t: "分析：这背后是阶级剥削与剩余价值的再次收割", p: ["davis", "luxemburg"], insight: "你看破了资本温柔的陷阱。你拒绝成为高级写字楼里的零件，你在计算这份诱惑背后的真实代价。", names: "戴维斯 / 卢森堡" },
+                { t: "接纳：将其视为一场职业角色的临时表演，不代表自我", p: ["butler", "beauvoir"], insight: "你把工作看作角色扮演。只要核心主体性不丢，舞台怎么换都行。这种“出戏”能力，是你的智慧。", names: "巴特勒 / 波伏娃" },
+                { t: "平衡：考虑这份资源能否转化为对他者更有益的福祉", p: ["nussbaum", "hooks"], insight: "你是个充满悲悯的现实主义者。你选了那条委屈但有用的路：通过个人妥协换取更多人的处境改善。", names: "努斯鲍姆 / 贝尔·胡克斯" }
+            ]},
+            { t: "在一次关于“家”的定义讨论中，你的第一反应是：", o: [
+                { t: "‘家’是精神的扎根点，是灵魂不再漂流的沉静之所", p: ["weil", "stein"], insight: "你渴望灵魂的深度归属感。对你来说，“家”意味着一种不再需要证明自己的、安然扎根的宁静。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "‘家’是一个被构建的私密领域，必须警惕其中的权力操纵", p: ["beauvoir", "mernissi"], insight: "你对“避风港”的叙事保持怀疑。你总能读出温情包裹下的控制逻辑，你要的是打破墙壁后的自由。", names: "波伏娃 / 梅尔尼西" },
+                { t: "‘家’是出发点，我们的一生都在通向广阔公共空间的行动中", p: ["arendt", "luxemburg"], insight: "你觉得待在家里是种浪费。你的家在广场上。只有在共同改变世界的行动里，你才觉得真的“到家”了。", names: "阿伦特 / 卢森堡" },
+                { t: "‘家’是混杂的边界，不应有任何基于血缘或地域的封闭定义", p: ["haraway", "hooks"], insight: "你对家的定义极度开放。只要有共鸣，处处皆是故乡。你享受那份流动的、混杂的联结感。", names: "哈拉维 / 贝尔·胡克斯" }
+            ]},
+            { t: "如果你可以决定未来人类的‘寿命’，你会：", o: [
+                { t: "追求永恒：让理性之光在无限的时间中不断进化", p: ["hypatia", "anscombe"], insight: "你对真理的渴望是无限的。你觉得一辈子太短，不够看清因果全貌。你渴望用长寿换取终极觉知。", names: "海帕提娅 / 安斯康姆" },
+                { t: "接纳脆弱：生命的意义恰恰源于其有限性与相互依赖", p: ["nussbaum", "foot"], insight: "你深知脆弱才是人性最动人的地方。完美的永恒在你眼中反而是一种贫瘠，你珍视老与死带来的深度。", names: "努斯鲍姆 / 福特" },
+                { t: "拥抱技术：打破碳基生命的局限，实现后人类的跃迁", p: ["haraway", "butler"], insight: "你是未来的先遣军。你对任何固化都感到厌倦，只要能获得新体验，你愿意尝试任何形式的混杂。", names: "哈拉维 / 巴特勒" },
+                { t: "关注当下：无论寿命长短，重点在于每一次真实的生存行动", p: ["beauvoir", "arendt"], insight: "你不纠结时间的长度，只在乎当下的厚度。一个清醒活过的瞬间，胜过一万年麻木的永生。", names: "波伏娃 / 阿伦特" }
+            ]},
+            { t: "面对消费主义社会中不断涌现的新欲望，你会：", o: [
+                { t: "审视：这些欲望是否是被系统性植入的虚假需求", p: ["hooks", "davis"], insight: "你拥有一种本能的抵抗力。你拒绝被商业逻辑投喂，你在保护自己的欲望主权，这极其勇敢。", names: "贝尔·胡克斯 / 戴维斯" },
+                { t: "解构：物品只是符号表演的媒介，并不能定义我", p: ["butler", "beauvoir"], insight: "你在游戏人间。你看穿了名牌背后的虚假神话，你可能会消费，但绝对不会让物品变成你的主人。", names: "巴特勒 / 波伏娃" },
+                { t: "剥离：通过对物质的‘去我化’注视，寻找精神的极简", p: ["weil", "stein"], insight: "你追求高度的自律。通过对物质的剥离，你让灵魂获得了呼吸空间。极简是你对世界的致敬。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "分析：通过理智判断其使用价值是否真正服务于人类繁荣", p: ["foot", "wollstonecraft"], insight: "你是一个清醒的务实派。你用逻辑过滤了虚幻的溢价，选了那条有利于长久繁荣的理智之路。", names: "福特 / 沃斯通克拉夫特" }
+            ]},
+            { t: "当你评价一场成功的‘对话’时，你最看重的指标是：", o: [
+                { t: "双方是否在逻辑层面达成了高度的共识与严谨性", p: ["hypatia", "anscombe"], insight: "你珍视智性上的同步。如果逻辑不严密，热闹也只是情绪的垃圾场。你追求的是事实的共振。", names: "海帕提娅 / 安斯康姆" },
+                { t: "对话是否激发了参与者走出私人领域、迈向共同行动", p: ["arendt", "luxemburg"], insight: "你认为对话的终点应该是出口。如果毫无改变，这种对话就是虚耗。你希望话语落地变成现实。", names: "阿伦特 / 卢森堡" },
+                { t: "对话者是否通过共情，真正触碰到了对方的内在现象界", p: ["stein", "weil"], insight: "你追求灵魂相认。你穿透了所有防御性的语言，去触碰那个真实的、颤抖着的生命核心。", names: "施泰因 / 西蒙娜·薇依" },
+                { t: "对话是否打破了原本固化的身份边界与偏见壁垒", p: ["mernissi", "hooks"], insight: "你视对话为一场越狱。如果一场对话能让你逃离原有的成见，这种“冒犯”就是最大的恩赐。", names: "梅尔尼西 / 贝尔·胡克斯" }
+            ]},
+            { t: "你如何看待艺术在人类生存中的位置？", o: [
+                { t: "艺术是对真理的模仿或揭示，是通向理智之光的梯子", p: ["hypatia", "stein"], insight: "你在艺术中寻找秩序。你相信宏大真理隐藏在美之下。这种审美是你追求真相的优雅方式。", names: "海帕提娅 / 施泰因" },
+                { t: "艺术是打破沉闷日常、实现自我生成的重要革命工具", p: ["beauvoir", "luxemburg"], insight: "艺术是你生命中的爆破手。你利用它炸开平庸的日常，它是你反抗枯燥生存的最后底牌。", names: "波伏娃 / 卢森堡" },
+                { t: "艺术是一种深度的‘注视’，让隐藏的痛苦得以显现", p: ["weil", "nussbaum"], insight: "你在艺术里修补世界。让那些被遗忘的痛苦被看见、被共情，这是你的一种神圣担当。", names: "西蒙娜·薇依 / 努斯鲍姆" },
+                { t: "艺术是符号博弈的战场，它能解构并重写社会的剧本", p: ["butler", "haraway"], insight: "你把艺术当作夺回定义权的阵地。通过符号重排，你赢得了一场关于“我是谁”的叙事战争。", names: "巴特勒 / 哈拉维" }
+            ]},
+            { t: "最后，当你回顾生命中最艰难的时刻，支撑你走过来的是：", o: [
+                { t: "对客观规律与逻辑必然性的清醒认识", p: ["hypatia", "anscombe"], insight: "你选了最冷静的力量。因为敬畏因果律，你在废墟里也能精准地找到重建的路。那份确定性救了你。", names: "海帕提娅 / 安斯康姆" },
+                { t: "对自由意志的绝对捍卫与持续的自我生成", p: ["beauvoir", "wollstonecraft"], insight: "你那股不服输的劲儿，源于对自己生命主权的掌控欲望。你相信只要没认输，这场仗就还没完。", names: "波伏娃 / 沃斯通克拉夫特" },
+                { t: "对这世间苦难的一份神圣担当与深度注视", p: ["weil", "stein"], insight: "因为心里装着比自己更重要的东西，个人的苦就变得轻了。你在注视中完成了对自己灵魂的救赎。", names: "西蒙娜·薇依 / 施泰因" },
+                { t: "与志同道合者在反抗不公中所建立的深刻联结", p: ["davis", "arendt"], insight: "那份“不是我一个人在战斗”的热诚，是你最坚硬的盔甲。这种群体性的温度让你穿越了严冬。", names: "戴维斯 / 阿伦特" }
             ]}
         ];
 
@@ -405,7 +513,7 @@
         function showDefinition(word) {
             document.getElementById('modal-title').innerText = word;
             const data = Object.values(philoData).find(p => p.name === word);
-            document.getElementById('modal-content').innerText = dictionary[word] || data?.desc || "检索中...";
+            document.getElementById('modal-content').innerText = dictionary[word] || data?.desc || "检索数据中...";
             document.getElementById('modal-overlay').style.display = 'flex';
         }
         function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
@@ -418,36 +526,79 @@
 
         function showQ() {
             const q = questions[curIdx];
-            document.getElementById('question-num').innerText = `Phase ${String(curIdx + 1).padStart(2, '0')} / 20`;
+            document.getElementById('question-num').innerText = `Phase ${String(curIdx + 1).padStart(2, '0')} / 30`;
             let text = q.t;
             Object.keys(dictionary).forEach(word => {
                 const regex = new RegExp(word, 'g');
                 text = text.replace(regex, `<span class="term-tag" style="cursor:help; color:var(--teal); border-bottom: 0.5px dotted #169cb2;" onclick="showDefinition('${word}')">${word}</span>`);
             });
             document.getElementById('question-text').innerHTML = text;
-            document.getElementById('progress').style.width = `${((curIdx) / 20) * 100}%`;
+            document.getElementById('progress').style.width = `${((curIdx) / 30) * 100}%`;
             document.getElementById('back-btn').style.display = curIdx > 0 ? 'inline-block' : 'none';
+
+            // 重置实时 UI
+            document.getElementById('insight-display').classList.add('hidden');
+            document.getElementById('continue-btn').classList.add('hidden');
+            currentTempSelection = null;
 
             const container = document.getElementById('options-container');
             container.innerHTML = '';
-            q.o.forEach(opt => {
+            q.o.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = "w-full p-4 text-left option-box text-[#302D2D] shadow-sm";
                 btn.innerText = opt.t;
-                btn.onclick = () => {
-                    historyArr.push(opt.p);
-                    opt.p.forEach(k => scoreMap[k]++);
-                    if (curIdx < 19) { curIdx++; showQ(); } else { showResult(); }
-                };
+                btn.onclick = () => revealInsight(idx);
                 container.appendChild(btn);
             });
         }
 
+        let currentTempSelection = null;
+
+        function revealInsight(idx) {
+            const q = questions[curIdx];
+            const opt = q.o[idx];
+            const buttons = document.querySelectorAll('.option-box');
+            
+            // 高亮当前选中的选项，但不锁定其他选项
+            buttons.forEach((btn, i) => {
+                btn.classList.remove('selected');
+                if (i === idx) btn.classList.add('selected');
+            });
+
+            // 存入当前选中的哲学家加分项和存根文字
+            currentTempSelection = { p: opt.p, insight: opt.insight, names: opt.names };
+
+            // 展示实时解读
+            document.getElementById('insight-body').innerText = opt.insight;
+            document.getElementById('insight-names').innerText = opt.names;
+            document.getElementById('insight-display').classList.remove('hidden');
+            
+            // 激活底部继续按钮
+            document.getElementById('continue-btn').classList.remove('hidden');
+        }
+
+        function nextQuestion() {
+            if (!currentTempSelection) return;
+
+            // 最终确认该题选择，录入历史和分数
+            historyArr.push(currentTempSelection);
+            currentTempSelection.p.forEach(k => scoreMap[k]++);
+            currentTempSelection = null;
+
+            if (curIdx < 29) {
+                curIdx++;
+                showQ();
+            } else {
+                showResult();
+            }
+        }
+
         function prevQuestion() {
             if (curIdx > 0) {
-                const lastKeys = historyArr.pop();
-                lastKeys.forEach(k => scoreMap[k]--);
-                curIdx--; showQ();
+                const lastEntry = historyArr.pop();
+                lastEntry.p.forEach(k => scoreMap[k]--);
+                curIdx--;
+                showQ();
             }
         }
 
@@ -486,9 +637,22 @@
             document.getElementById('mentor-name').innerText = data.name;
             document.getElementById('mentor-quote').innerText = `“${data.quote}”`;
             document.getElementById('mentor-work').innerText = data.work;
+            document.getElementById('mentor-thought').innerText = data.thought;
+            document.getElementById('mentor-resonance').innerText = data.resonance;
             document.getElementById('result-desc').innerText = data.desc;
-            document.getElementById('book-list').innerHTML = data.books.map(b => `<div class="py-1.5 italic text-[11px] text-gray-500">· ${b}</div>`).join('');
+            document.getElementById('book-list').innerHTML = data.books.map(b => `<div class="py-1">· ${b}</div>`).join('');
             
+            const insightContainer = document.getElementById('insight-container');
+            // 筛选出与最终结果最对齐的 3 个灵感存根
+            const displayInsights = historyArr.filter(h => h.p.includes(winnerKey)).slice(0, 3);
+            const finalInsights = displayInsights.length >= 3 ? displayInsights : historyArr.slice(-3);
+            
+            insightContainer.innerHTML = finalInsights.map(h => `
+                <div class="border-l-2 border-[#169cb2]/20 pl-3">
+                    <p class="text-[11px] leading-relaxed text-gray-500 italic">“${h.insight}”</p>
+                </div>
+            `).join('');
+
             renderMapPage(0);
 
             new Chart(document.getElementById('radarChart').getContext('2d'), {
@@ -523,10 +687,14 @@
         async function saveAsImage() {
             const btn = document.getElementById('save-btn');
             btn.innerText = "Processing...";
-            const canvas = await html2canvas(document.getElementById('capture-area'), { scale: 3, backgroundColor: "#FBFCFA" });
+            const canvas = await html2canvas(document.getElementById('capture-area'), { 
+                scale: 3, 
+                backgroundColor: "#FBFCFA",
+                useCORS: true
+            });
             const link = document.createElement('a');
-            link.download = `Detection_Report.png`;
-            link.href = canvas.toDataURL();
+            link.download = `Philo_Report_${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
             link.click();
             btn.innerText = "Save Image";
         }
